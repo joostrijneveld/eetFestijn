@@ -1,0 +1,9 @@
+{% if item_list %}
+    <ul>
+    {% for item in item_list %}
+        <li>{{ item }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Geen menu beschikbaar.</p>
+{% endif %}
