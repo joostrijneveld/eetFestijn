@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load bootstrap3 %}
-    {% bootstrap_messages %}
     {% bootstrap_css %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'orders/style.css' %}" />
@@ -16,18 +15,19 @@
             <div class="col-sm-4 sidebar">
                 <h2>Bestelling</h2>
                 <form role="form" method="post">
-                {% bootstrap_form_errors form type='non_fields' %}
-                {% csrf_token %}
-                {% bootstrap_form form %}
-                <div class="form-group">
-                    <label class="control-label" for="id_name">Voedsels</label>
-                    <table class="table table-striped" id='ordertable'>
-                        <tr><th style='width:70%'>Naam</th><th>Prijs</th><th></th></tr>
-                        <tr id='nofood'><td colspan='3'>Nog geen voedsels geselecteerd</td></tr>
-                        <tr id='total' data-total='0'><th>Totaal: </th><td>€ 0,00</td><td></td></tr>
-                    </table>
-                </div>
-                <button type='submit' class='btn btn-primary' id='submitbtn'>Geef bestelling door</button>
+                    {% csrf_token %}
+                    {% bootstrap_messages %}
+                    {% bootstrap_form form %}
+                    {% bootstrap_form_errors form type='non_fields' %}
+                    <div class="form-group">
+                        <label class="control-label" for="id_name">Voedsels</label>
+                        <table class="table table-striped" id='ordertable'>
+                            <tr><th style='width:70%'>Naam</th><th>Prijs</th><th></th></tr>
+                            <tr id='nofood'><td colspan='3'>Nog geen voedsels geselecteerd</td></tr>
+                            <tr id='total' data-total='0'><th>Totaal: </th><td>€ 0,00</td><td></td></tr>
+                        </table>
+                    </div>
+                    <button type='submit' class='btn btn-primary' id='submitbtn'>Geef bestelling door</button>
                 </form>
             </div>
             <div class="col-sm-8 col-sm-offset-4 main">
