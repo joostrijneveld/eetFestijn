@@ -4,6 +4,7 @@ from django.db import models
 class Item(models.Model):
     name = models.CharField(max_length=200)
     price = models.IntegerField(default=0)
+    discounts = models.ManyToManyField('Discount', blank=True)
 
     def __str__(self):
         return "{} (€ {:.2f})".format(self.name, self.price/100)
@@ -33,3 +34,12 @@ class ItemOrder(models.Model):
 
     def __str__(self):
         return str(self.item)
+
+class Discount(models.Model):
+    name = models.CharField(max_length=200)
+    value = models.IntegerField(default=0)
+    relative = models.BooleanField(default=False)
+    days = models.CommaSeparatedIntegerField(max_length=20)
+
+    def __str__(self):
+        return self.name

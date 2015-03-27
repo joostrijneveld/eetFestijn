@@ -11,11 +11,25 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Discount',
+            fields=[
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=200)),
+                ('value', models.IntegerField(default=0)),
+                ('relative', models.BooleanField(default=False)),
+                ('days', models.CommaSeparatedIntegerField(max_length=20)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Item',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=200)),
                 ('price', models.IntegerField(default=0)),
+                ('discounts', models.ManyToManyField(to='orders.Discount')),
             ],
             options={
             },
@@ -24,7 +38,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ItemOrder',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
                 ('item', models.ForeignKey(to='orders.Item')),
             ],
             options={
@@ -34,9 +48,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Order',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=200)),
-                ('in_wie_betaald_wat', models.BooleanField(default=True)),
+                ('in_wie_betaalt_wat', models.BooleanField(default=True, verbose_name='Via Wiebetaaltwat')),
                 ('items', models.ManyToManyField(through='orders.ItemOrder', to='orders.Item')),
             ],
             options={
