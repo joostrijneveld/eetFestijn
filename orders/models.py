@@ -35,6 +35,7 @@ class ItemOrder(models.Model):
     def __str__(self):
         return str(self.item)
 
+
 class Discount(models.Model):
     name = models.CharField(max_length=200)
     value = models.IntegerField(default=0)
@@ -43,3 +44,8 @@ class Discount(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+    items = models.ManyToManyField(Item)
