@@ -1,5 +1,6 @@
 from django.db import models
-
+import locale
+locale.setlocale(locale.LC_ALL, 'nl_NL')
 
 class Item(models.Model):
     name = models.CharField(max_length=200)
@@ -7,7 +8,11 @@ class Item(models.Model):
     discounts = models.ManyToManyField('Discount', blank=True)
 
     def __str__(self):
-        return "{} (€ {:.2f})".format(self.name, self.price/100)
+        return self.name + " (€ " + locale.format('%.2f', self.price/100) + ")"
+
+    @property
+    def price_str(self):
+        return "€ " + locale.format('%.2f', self.price/100)
 
 
 class Order(models.Model):

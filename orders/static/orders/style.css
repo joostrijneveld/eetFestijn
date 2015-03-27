@@ -1,0 +1,42 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+}
+
+.main {
+    padding: 20px;
+}
+
+#itemlist {
+    min-height: 100px;
+    padding: 10px;
+    background: none;
+}
+
+.hidden {
+    display: none;
+}
+
+table.menu tr {
+    cursor: pointer;
+}
+
+tr#nofood td {
+    text-align: center;
+    font-style: italic;
+}
+
+#ordertable tr:last-child th {
+    text-align: right;
+}
+
+a.removelink {
+    cursor: pointer;
+}
