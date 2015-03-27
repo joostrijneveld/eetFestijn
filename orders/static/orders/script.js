@@ -2,7 +2,7 @@ var menuJS = {
 
     init:function() {
         $('#submitbtn').prop('disabled', true);
-        $("table.menu tr").click(function (e) {
+        $("table.menu tr").slice(1).click(function (e) {
             menuJS.add($(this));
         });
     },

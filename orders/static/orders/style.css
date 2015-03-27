@@ -24,7 +24,7 @@
     display: none;
 }
 
-table.menu tr {
+table.menu tr:not(:first-child) {
     cursor: pointer;
 }
 
