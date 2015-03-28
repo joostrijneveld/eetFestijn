@@ -63,7 +63,7 @@ class Discount(models.Model):
 
     def is_active(self):
         currentday = datetime.datetime.today().weekday()
-        return currentday in map(int, self.days.split(','))
+        return self.days and currentday in map(int, self.days.split(','))
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
