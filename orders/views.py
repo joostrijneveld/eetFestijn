@@ -21,15 +21,12 @@ def index(request):
                 item = Item.objects.get(pk=item_id)
                 order_item = ItemOrder.objects.create(item=item, order=order)
             order.save()
-            return HttpResponseRedirect(reverse('orders:success'))
+            messages.success(request, "Bestelling succesvol doorgegeven!")
+            return HttpResponseRedirect(reverse('orders:index'))
     else:
         form = OrderForm()
     context = {'item_list': Item.objects.all(), 'form': form}
     return render(request, 'orders/index.html', context)
-
-def success(request):
-    messages.success(request, "Bestelling succesvol doorgegeven!")
-    return index(request)
 
 def summary(request):
     c = Counter()
