@@ -9,6 +9,9 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
+    def discountstring(self):
+        return ", ".join(map(str, self.discounts.all()))
+
     @property
     def real_price(self):
         discounts = [x for x in self.discounts.all() if x.is_active()]
@@ -16,6 +19,9 @@ class Item(models.Model):
         if not all(x.relative for x in discounts):
             price = min(x.value for x in discounts if not x.relative)
         return price - sum(x.value for x in discounts if x.relative)
+
+    discountstring.short_description = 'Discounts'
+
 
 class Order(models.Model):
     name = models.CharField(max_length=200)

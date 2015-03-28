@@ -7,10 +7,14 @@ class ItemOrderInline(admin.TabularInline):
     extra = 1
 
 
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'discountstring')
+
+
 class OrderAdmin(admin.ModelAdmin):
     inlines = (ItemOrderInline, )
     list_display = ('name', 'itemstring', 'total', 'wiebetaaltwat')
 
 admin.site.register(Order, OrderAdmin)
-admin.site.register(Item)
+admin.site.register(Item, ItemAdmin)
 admin.site.register(Discount)
