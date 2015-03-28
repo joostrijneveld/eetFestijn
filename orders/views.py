@@ -14,7 +14,7 @@ def index(request):
         if form.is_valid():
             order = Order()
             order.name = form.cleaned_data['name']
-            order.in_wie_betaalt_wat = form.cleaned_data['wiebetaaltwat']
+            order.wiebetaaltwat = form.cleaned_data['wiebetaaltwat']
             order.save()  # need to save to get an id, to prevent ValueError
             item_ids = request.POST.getlist('items[]')
             for item_id in item_ids:

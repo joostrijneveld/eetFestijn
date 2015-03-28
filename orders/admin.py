@@ -9,7 +9,7 @@ class ItemOrderInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = (ItemOrderInline, )
-    list_display = ('name', 'itemstring', 'total', 'in_wie_betaalt_wat')
+    list_display = ('name', 'itemstring', 'total', 'wiebetaaltwat')
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Item)

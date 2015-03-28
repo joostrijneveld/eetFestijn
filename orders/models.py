@@ -17,7 +17,7 @@ class Item(models.Model):
 
 class Order(models.Model):
     name = models.CharField(max_length=200)
-    in_wie_betaalt_wat = models.BooleanField('Via Wiebetaaltwat', default=True)
+    wiebetaaltwat = models.BooleanField('Via Wiebetaaltwat', default=True)
     items = models.ManyToManyField(Item, through='ItemOrder')
 
     def __str__(self):
