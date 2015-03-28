@@ -1,3 +1,5 @@
+from collections import Counter
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -30,7 +32,12 @@ def success(request):
     return index(request)
 
 def summary(request):
-    return render(request, 'orders/summary.html', None)
+    c = Counter()
+    for order in Order.objects.all():
+        for item in order.items.all():
+            c.update([item.name])
+    context = {'combined_order': dict(c)}
+    return render(request, 'orders/summary.html', context)
 
 def overview(request):
     return render(request, 'orders/overview.html', None)
