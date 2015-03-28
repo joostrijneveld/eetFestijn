@@ -52,5 +52,5 @@ def overview(request):
         return HttpResponseRedirect(reverse('orders:overview'))
 
     orders = Order.objects.all()
-    context = {'orders': orders}
+    context = {'orders': orders, 'grandtotal': Order.grandtotal()}
     return render(request, 'orders/overview.html', context)

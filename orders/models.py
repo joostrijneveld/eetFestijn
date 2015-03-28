@@ -29,6 +29,9 @@ class Order(models.Model):
     def total(self):
         return "€ {:.2f}".format(sum([x.price for x in self.items.all()])/100)
 
+    def grandtotal():
+        return "€ {:.2f}".format(sum([x.price for y in Order.objects.all() for x in y.items.all()])/100)
+
     itemstring.short_description = 'Items'
     total.short_description = 'Total'
 

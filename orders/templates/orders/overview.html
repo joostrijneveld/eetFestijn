@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4 main">
-                <h2>Bestellingen</h2>
+                <h2>Bestellingen ({{ grandtotal }})</h2>
                 <form role='form' method='post' style='margin-bottom:25px;'>
                 {% csrf_token %}
                 <p>Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.</p>
