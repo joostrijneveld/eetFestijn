@@ -34,7 +34,7 @@
                             <th><button name='remove' value='{{ order.pk }}' type='submit' class='btn btn-danger btn-xs' onclick="return confirm('Weet je zeker dat je deze bestelling van {{ order.name}} wilt verwijderen?')">{% bootstrap_icon 'trash' %}</button></th>
                         </tr>
                         {% for item in order.items.all %}
-                        <tr><td>{{ item.name }}</td><td>{{ item.price | euro }}</td><td></td></tr>
+                        <tr><td>{{ item.name }}</td><td>{{ item.real_price | euro }}</td><td></td></tr>
                         {% endfor %}
                     </table>
                 </form>

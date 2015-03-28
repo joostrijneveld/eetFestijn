@@ -44,3 +44,8 @@ tr#nofood td {
 a.removelink {
     cursor: pointer;
 }
+
+span.oldprice {
+    color: gray;
+    text-decoration: line-through;
+}

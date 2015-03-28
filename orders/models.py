@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 class Item(models.Model):
     name = models.CharField(max_length=200)
@@ -7,6 +8,14 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def real_price(self):
+        discounts = [x for x in self.discounts.all() if x.is_active()]
+        price = self.price
+        if not all(x.relative for x in discounts):
+            price = min(x.value for x in discounts if not x.relative)
+        return price - sum(x.value for x in discounts if x.relative)
 
 class Order(models.Model):
     name = models.CharField(max_length=200)
@@ -20,7 +29,7 @@ class Order(models.Model):
         return ", ".join(map(str, self.items.all()))
 
     def total(self):
-        return sum(x.price for x in self.items.all())
+        return sum(x.real_price for x in self.items.all())
 
     def grandtotal():
         return sum(y.total() for y in Order.objects.all())
@@ -46,6 +55,9 @@ class Discount(models.Model):
     def __str__(self):
         return self.name
 
+    def is_active(self):
+        currentday = datetime.datetime.today().weekday()
+        return currentday in map(int, self.days.split(','))
 
 class Category(models.Model):
     name = models.CharField(max_length=200)

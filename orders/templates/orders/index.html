@@ -41,9 +41,13 @@
                         <table class="table table-striped table-hover menu">
                             <tr><th>Naam</th><th>Prijs</th></tr>
                         {% for item in col1 %}
-                            <tr data-id='{{ item.pk }}' data-price='{{ item.price }}'>
+                            <tr data-id='{{ item.pk }}' data-price='{{ item.real_price }}'>
                                 <td>{{ item.name }}</td>
-                                <td>{{ item.price | euro }}</td>
+                                {% if item.real_price != item.price %}
+                                <td>{{ item.real_price | euro }}<br><span class='oldprice'>{{ item.price | euro }}</span></td>
+                                {% else %}
+                                <td>{{ item.real_price | euro }}</td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                         </table>
@@ -52,9 +56,13 @@
                         <table class="table table-striped table-hover menu">
                             <tr><th>Naam</th><th>Prijs</th></tr>
                         {% for item in col2 %}
-                            <tr data-id='{{ item.pk }}' data-price='{{ item.price }}'>
+                            <tr data-id='{{ item.pk }}' data-price='{{ item.real_price }}'>
                                 <td>{{ item.name }}</td>
-                                <td>{{ item.price | euro }}</td>
+                                {% if item.real_price != item.price %}
+                                <td>{{ item.real_price | euro }}<br><span class='oldprice'>{{ item.price | euro }}</span></td>
+                                {% else %}
+                                <td>{{ item.real_price | euro }}</td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                         </table>
