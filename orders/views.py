@@ -25,7 +25,10 @@ def index(request):
             return HttpResponseRedirect(reverse('orders:index'))
     else:
         form = OrderForm()
-    context = {'item_list': Item.objects.all(), 'form': form}
+    item_list = Item.objects.all()
+    col1 = item_list[:(len(item_list)+1)//2]
+    col2 = item_list[(len(item_list)+1)//2:]
+    context = {'col1': col1, 'col2': col2, 'form': form}
     return render(request, 'orders/index.html', context)
 
 def summary(request):
