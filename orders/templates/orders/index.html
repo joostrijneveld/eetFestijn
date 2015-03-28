@@ -22,12 +22,14 @@
                     <div class="form-group">
                         <label class="control-label" for="id_name">Voedsels</label>
                         <table class="table table-striped" id='ordertable'>
-                            <tr><th style='width:70%'>Naam</th><th>Prijs</th><th></th></tr>
+                            <tr><th style='width:70%'>Naam</th><th style='width:20%'>Prijs</th><th></th></tr>
                             <tr id='nofood'><td colspan='3'>Nog geen voedsels geselecteerd</td></tr>
                             <tr id='total' data-total='0'><th>Totaal: </th><td>€ 0,00</td><td></td></tr>
                         </table>
                     </div>
                     <button type='submit' class='btn btn-primary' id='submitbtn'>Geef bestelling door</button>
+                    <a class='btn btn-default' href="{% url 'orders:summary' %}">{% bootstrap_icon "print" %}</a>
+                    <a class='btn btn-default' href="{% url 'orders:overview' %}">{% bootstrap_icon "list" %}</a>
                 </form>
             </div>
             <div class="col-sm-8 col-sm-offset-4 main">
@@ -50,6 +52,6 @@
     </div>
     {% bootstrap_javascript jquery=1 %}
     <script type="text/javascript" src="{% static 'orders/script.js' %}"></script>
-    <div class='hidden' id='deleteicon'><a class='removelink text-danger'>{% bootstrap_icon "remove" %}</a></div>
+    <div class='hidden' id='deleteicon'><a class='removelink text-danger'>{% bootstrap_icon "trash" %}</a></div>
 </body>
 </html>
