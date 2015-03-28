@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load bootstrap3 %}
+    {% load display_euro %}
     {% bootstrap_css %}
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'orders/style.css' %}" />
@@ -24,7 +25,7 @@
                         <table class="table table-striped" id='ordertable'>
                             <tr><th style='width:70%'>Naam</th><th style='width:20%'>Prijs</th><th></th></tr>
                             <tr id='nofood'><td colspan='3'>Nog geen voedsels geselecteerd</td></tr>
-                            <tr id='total' data-total='0'><th>Totaal: </th><td>€ 0,00</td><td></td></tr>
+                            <tr id='total' data-total='0'><th>Totaal: </th><td>{{ 0 | euro }}</td><td></td></tr>
                         </table>
                     </div>
                     <button type='submit' class='btn btn-primary' id='submitbtn'>Geef bestelling door</button>
@@ -42,7 +43,7 @@
                         {% for item in col1 %}
                             <tr data-id='{{ item.pk }}' data-price='{{ item.price }}'>
                                 <td>{{ item.name }}</td>
-                                <td>{{ item.price_str }}</td>
+                                <td>{{ item.price | euro }}</td>
                             </tr>
                         {% endfor %}
                         </table>
@@ -53,7 +54,7 @@
                         {% for item in col2 %}
                             <tr data-id='{{ item.pk }}' data-price='{{ item.price }}'>
                                 <td>{{ item.name }}</td>
-                                <td>{{ item.price_str }}</td>
+                                <td>{{ item.price | euro }}</td>
                             </tr>
                         {% endfor %}
                         </table>

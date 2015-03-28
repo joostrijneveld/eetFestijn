@@ -5,13 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load bootstrap3 %}
+    {% load display_euro %}
     {% bootstrap_css %}
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4 main">
-                <h2>Bestellingen ({{ grandtotal }})</h2>
+                <h2>Bestellingen ({{ grandtotal | euro }})</h2>
                 <form role='form' method='post' style='margin-bottom:25px;'>
                 {% csrf_token %}
                 <p>Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.</p>
@@ -29,11 +30,11 @@
                                 <span class='text-danger'>{% bootstrap_icon "remove" %}</span>
                                 {% endif %})
                             </th>
-                            <th>{{ order.total }}</th>
+                            <th>{{ order.total | euro }}</th>
                             <th><button name='remove' value='{{ order.pk }}' type='submit' class='btn btn-danger btn-xs' onclick="return confirm('Weet je zeker dat je deze bestelling van {{ order.name}} wilt verwijderen?')">{% bootstrap_icon 'trash' %}</button></th>
                         </tr>
                         {% for item in order.items.all %}
-                        <tr><td>{{ item.name }}</td><td>{{ item.price_str }}</td><td></td></tr>
+                        <tr><td>{{ item.name }}</td><td>{{ item.price | euro }}</td><td></td></tr>
                         {% endfor %}
                     </table>
                 </form>
