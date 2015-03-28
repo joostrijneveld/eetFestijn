@@ -2,7 +2,7 @@ from django import template
 
 import locale
 
-locale.setlocale(locale.LC_ALL, 'nl_NL')
+locale.setlocale(locale.LC_ALL, 'nl_NL.UTF-8')
 register = template.Library()
 
 @register.filter

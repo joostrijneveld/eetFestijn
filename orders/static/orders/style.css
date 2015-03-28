@@ -1,13 +1,33 @@
 .sidebar {
     position: fixed;
     top: 0;
-    bottom: 0;
+    bottom: 25px;
     left: 0;
     padding: 20px;
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height:25px;
+    text-align:center;
+    font-size: 12px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+}
+
+.footer a {
+    color: #999;
+}
+
+.footer a:hover, .footer a:focus {
+    color: #333;
+    text-decoration: none;
 }
 
 .main {
