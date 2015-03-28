@@ -37,4 +37,17 @@ def summary(request):
     return render(request, 'orders/summary.html', context)
 
 def overview(request):
-    return render(request, 'orders/overview.html', None)
+    if request.method == 'POST' and request.POST['remove']:
+        if request.POST['remove'] == 'all':
+            Order.objects.all().delete()
+            messages.success(request, "Alle bestellingen verwijderd!")
+        else:
+            order = Order.objects.get(pk=request.POST['remove'])
+            msg = "Bestelling van {.name} verwijderd!".format(order)
+            order.delete()
+            messages.success(request, msg)
+        return HttpResponseRedirect(reverse('orders:overview'))
+
+    orders = Order.objects.all()
+    context = {'orders': orders}
+    return render(request, 'orders/overview.html', context)

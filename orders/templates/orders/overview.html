@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 main">
+                <h2>Bestellingen</h2>
+                <form role='form' method='post' style='margin-bottom:25px;'>
+                {% csrf_token %}
+                <p>Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.</p>
+                </form>
+                {% bootstrap_messages %}
+                {% for order in orders %}
+                <form role='form' method='post'>
+                    {% csrf_token %}
+                    <table class="table" style='margin-bottom:25px;'>
+                        <tr>
+                            <th style='width:70%'>{{ order.name }} (wbw:
+                                {% if order.in_wie_betaalt_wat %}
+                                <span class='text-success'>{% bootstrap_icon "ok" %}</span>
+                                {% else %}
+                                <span class='text-danger'>{% bootstrap_icon "remove" %}</span>
+                                {% endif %})
+                            </th>
+                            <th>{{ order.total }}</th>
+                            <th><button name='remove' value='{{ order.pk }}' type='submit' class='btn btn-danger btn-xs' onclick="return confirm('Weet je zeker dat je deze bestelling van {{ order.name}} wilt verwijderen?')">{% bootstrap_icon 'trash' %}</button></th>
+                        </tr>
+                        {% for item in order.items.all %}
+                        <tr><td>{{ item.name }}</td><td>{{ item.price_str }}</td><td></td></tr>
+                        {% endfor %}
+                    </table>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% bootstrap_javascript jquery=1 %}
+</body>
+</html>
