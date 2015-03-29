@@ -1,12 +1,16 @@
 from collections import Counter
+import json
+import urllib
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.conf import settings
 
 from orders.models import Item, Order, ItemOrder
 from orders.forms import OrderForm
+from orders.templatetags.display_euro import euro
 
 def index(request):
     if request.method == 'POST':
@@ -40,17 +44,36 @@ def summary(request):
     return render(request, 'orders/summary.html', context)
 
 def overview(request):
-    if request.method == 'POST' and request.POST['remove']:
-        if request.POST['remove'] == 'all':
-            Order.objects.all().delete()
-            messages.success(request, "Alle bestellingen verwijderd!")
-        else:
-            order = Order.objects.get(pk=request.POST['remove'])
-            msg = "Bestelling van {.name} verwijderd!".format(order)
-            order.delete()
-            messages.success(request, msg)
-        return HttpResponseRedirect(reverse('orders:overview'))
+    if request.method == 'POST':
+        if 'remove' in request.POST:
+            if request.POST['remove'] == 'all':
+                Order.objects.all().delete()
+                messages.success(request, "Alle bestellingen verwijderd!")
+            else:
+                order = Order.objects.get(pk=request.POST['remove'])
+                msg = "Bestelling van {.name} verwijderd!".format(order)
+                order.delete()
+                messages.success(request, msg)
+            return HttpResponseRedirect(reverse('orders:overview'))
+        elif 'slack' in request.POST and hasattr(settings, 'SLACK'):
+            jsondata = {'text' : 'Nieuwe bestelling!',
+                        'channel' : settings.SLACK['channel'],
+                        'username' : settings.SLACK['username'],
+                        'icon_emoji' : settings.SLACK['icon_emoji']}
+            for order in Order.objects.all():
+                jsondata['text'] += '\n*{}* ({}):'.format(
+                    order.name, euro(order.total()))
+                items = [' {} ({})'.format(item.name, euro(item.real_price))
+                    for item in order.items.all()]
+                jsondata['text'] += ', '.join(items)
+            payload = {'payload' : json.dumps(jsondata)}
+            data = urllib.parse.urlencode(payload).encode('UTF-8')
+            req = urllib.request.Request(settings.SLACK['webhook'], data)
+            urllib.request.urlopen(req)
+            messages.success(request, "Bestellingen gedeeld via Slack!")
+            return HttpResponseRedirect(reverse('orders:overview'))
 
     orders = Order.objects.all()
-    context = {'orders': orders, 'grandtotal': Order.grandtotal()}
+    context = {'orders': orders, 'grandtotal': Order.grandtotal(),
+        'slack': hasattr(settings, 'SLACK')}
     return render(request, 'orders/overview.html', context)

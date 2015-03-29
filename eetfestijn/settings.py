@@ -84,3 +84,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+SLACK = {
+    'webhook': 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX',
+    'username': 'eetFestijn',
+    'channel': '#random',
+    'icon_emoji': ':fries:'
+    }

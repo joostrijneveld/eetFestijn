@@ -7,6 +7,7 @@
     {% load bootstrap3 %}
     {% load display_euro %}
     {% bootstrap_css %}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -15,7 +16,7 @@
                 <h2>Bestellingen ({{ grandtotal | euro }})</h2>
                 <form role='form' method='post' style='margin-bottom:25px;'>
                 {% csrf_token %}
-                <p>Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.</p>
+                <p>Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.{% if slack %} Je kunt de huidige bestellingen ook delen via <button type='submit' name='slack' value='post' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestelling via Slack wilt delen?")'><i class="fa fa-slack"></i> Slack</button>{% endif %}</p>
                 </form>
                 {% bootstrap_messages %}
                 {% for order in orders %}
