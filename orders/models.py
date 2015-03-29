@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 
+
 class Item(models.Model):
     name = models.CharField(max_length=200)
     price = models.IntegerField(default=0)
@@ -64,6 +65,7 @@ class Discount(models.Model):
     def is_active(self):
         currentday = datetime.datetime.today().weekday()
         return self.days and currentday in map(int, self.days.split(','))
+
 
 class Category(models.Model):
     name = models.CharField(max_length=200)

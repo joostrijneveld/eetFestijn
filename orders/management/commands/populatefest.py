@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from orders.models import Item, Discount
 
+
 class Command(BaseCommand):
     help = 'Populates the database with the Fest menu'
 
@@ -13,12 +14,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("Populating with Fest menu..")
-        schoteldag = Discount.objects.create(name="Schoteldag",
-            days='2,3', relative=True, value=200)
-        pizzadag25 = Discount.objects.create(name="Pizzadag (t/m 25)",
-            days='0,1', relative=False, value=600)
-        pizzadag2635 = Discount.objects.create(name="Pizzadag (26 t/m 35)",
-            days='0,1', relative=False, value=800)
+        schoteldag = Discount.objects.create(
+            name="Schoteldag", days='2,3', relative=True, value=200)
+        pizzadag25 = Discount.objects.create(
+            name="Pizzadag (t/m 25)", days='0,1', relative=False, value=600)
+        pizzadag2635 = Discount.objects.create(
+            name="Pizzadag (26 t/m 35)", days='0,1', relative=False, value=800)
 
         self._add_item("Friet zonder (klein)", 160)
         self._add_item("Friet zonder (groot)", 210)
@@ -229,5 +230,3 @@ class Command(BaseCommand):
         self._add_item("Currysaus", 100)
         self._add_item("Satésaus (klein)", 125)
         self._add_item("Satésaus (groot)", 250)
-
-

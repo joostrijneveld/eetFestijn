@@ -12,6 +12,7 @@ from orders.models import Item, Order, ItemOrder
 from orders.forms import OrderForm
 from orders.templatetags.display_euro import euro
 
+
 def index(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -35,6 +36,7 @@ def index(request):
     context = {'col1': col1, 'col2': col2, 'form': form}
     return render(request, 'orders/index.html', context)
 
+
 def summary(request):
     c = Counter()
     for order in Order.objects.all():
@@ -42,6 +44,7 @@ def summary(request):
             c.update([item.name])
     context = {'combined_order': dict(c)}
     return render(request, 'orders/summary.html', context)
+
 
 def overview(request):
     if request.method == 'POST':
@@ -56,17 +59,17 @@ def overview(request):
                 messages.success(request, msg)
             return HttpResponseRedirect(reverse('orders:overview'))
         elif 'slack' in request.POST and hasattr(settings, 'SLACK'):
-            jsondata = {'text' : 'Nieuwe bestelling!',
-                        'channel' : settings.SLACK['channel'],
-                        'username' : settings.SLACK['username'],
-                        'icon_emoji' : settings.SLACK['icon_emoji']}
+            jsondata = {'text': 'Nieuwe bestelling!',
+                        'channel': settings.SLACK['channel'],
+                        'username': settings.SLACK['username'],
+                        'icon_emoji': settings.SLACK['icon_emoji']}
             for order in Order.objects.all():
                 jsondata['text'] += '\n*{}* ({}):'.format(
                     order.name, euro(order.total()))
                 items = [' {} ({})'.format(item.name, euro(item.real_price))
-                    for item in order.items.all()]
+                         for item in order.items.all()]
                 jsondata['text'] += ', '.join(items)
-            payload = {'payload' : json.dumps(jsondata)}
+            payload = {'payload': json.dumps(jsondata)}
             data = urllib.parse.urlencode(payload).encode('UTF-8')
             req = urllib.request.Request(settings.SLACK['webhook'], data)
             urllib.request.urlopen(req)
@@ -75,5 +78,5 @@ def overview(request):
 
     orders = Order.objects.all()
     context = {'orders': orders, 'grandtotal': Order.grandtotal(),
-        'slack': hasattr(settings, 'SLACK')}
+               'slack': hasattr(settings, 'SLACK')}
     return render(request, 'orders/overview.html', context)
