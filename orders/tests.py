@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.test import TestCase
 from orders.models import Item, Order, ItemOrder, Discount
 import datetime

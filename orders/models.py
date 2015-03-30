@@ -39,6 +39,7 @@ class Order(models.Model):
     def total(self):
         return sum(x.real_price for x in self.items.all())
 
+    @staticmethod
     def grandtotal():
         return sum(y.total() for y in Order.objects.all())
 
