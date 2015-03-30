@@ -19,6 +19,7 @@ class Item(models.Model):
         price = self.price
         if not all(x.relative for x in discounts):
             price = min(x.value for x in discounts if not x.relative)
+            price = min(price, self.price)
         return price - sum(x.value for x in discounts if x.relative)
 
     discountstring.short_description = 'Discounts'
