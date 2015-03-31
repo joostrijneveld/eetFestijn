@@ -11,7 +11,7 @@ install:
 
 script:
     - python manage.py test
-    - coverage run manage.py test
+    - coverage run --source=orders --omit="*/migrations/*" manage.py test
 
 after_success:
     - coveralls
