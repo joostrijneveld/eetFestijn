@@ -12,6 +12,7 @@ class Item(models.Model):
 
     def discountstring(self):
         return ", ".join(map(str, self.discounts.all()))
+    discountstring.short_description = 'Discounts'
 
     @property
     def real_price(self):
@@ -22,7 +23,6 @@ class Item(models.Model):
             price = min(price, self.price)
         return price - sum(x.value for x in discounts if x.relative)
 
-    discountstring.short_description = 'Discounts'
 
 
 class Order(models.Model):
@@ -35,16 +35,16 @@ class Order(models.Model):
 
     def itemstring(self):
         return ", ".join(map(str, self.items.all()))
+    itemstring.short_description = 'Items'
 
     def total(self):
         return sum(x.real_price for x in self.items.all())
+    total.short_description = 'Total'
 
     @staticmethod
     def grandtotal():
         return sum(y.total() for y in Order.objects.all())
 
-    itemstring.short_description = 'Items'
-    total.short_description = 'Total'
 
 
 class ItemOrder(models.Model):
