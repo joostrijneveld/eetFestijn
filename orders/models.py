@@ -24,7 +24,6 @@ class Item(models.Model):
         return price - sum(x.value for x in discounts if x.relative)
 
 
-
 class Order(models.Model):
     name = models.CharField(max_length=200)
     wiebetaaltwat = models.BooleanField('Via Wiebetaaltwat', default=True)
@@ -44,7 +43,6 @@ class Order(models.Model):
     @staticmethod
     def grandtotal():
         return sum(y.total() for y in Order.objects.all())
-
 
 
 class ItemOrder(models.Model):
