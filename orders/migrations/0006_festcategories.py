@@ -230,15 +230,16 @@ def categorise_fest(apps, schema_editor):
     pizzas.items.add(Item.objects.get(name="-extra groente of fruit").pk)
     pizzas.items.add(Item.objects.get(name="-extra ham of salami").pk)
 
-    pizzas.items.add(Item.objects.get(name="Knoflooksaus").pk)
-    pizzas.items.add(Item.objects.get(name="Mayonaise").pk)
-    pizzas.items.add(Item.objects.get(name="Sambalsaus").pk)
-    pizzas.items.add(Item.objects.get(name="Tomatensaus").pk)
-    pizzas.items.add(Item.objects.get(name="Cocktailsaus").pk)
-    pizzas.items.add(Item.objects.get(name="Joppiesaus").pk)
-    pizzas.items.add(Item.objects.get(name="Currysaus").pk)
-    pizzas.items.add(Item.objects.get(name="Satésaus (klein)").pk)
-    pizzas.items.add(Item.objects.get(name="Satésaus (groot)").pk)
+    sauzen = Category.objects.create(name="Sauzen")
+    sauzen.items.add(Item.objects.get(name="Knoflooksaus").pk)
+    sauzen.items.add(Item.objects.get(name="Mayonaise").pk)
+    sauzen.items.add(Item.objects.get(name="Sambalsaus").pk)
+    sauzen.items.add(Item.objects.get(name="Tomatensaus").pk)
+    sauzen.items.add(Item.objects.get(name="Cocktailsaus").pk)
+    sauzen.items.add(Item.objects.get(name="Joppiesaus").pk)
+    sauzen.items.add(Item.objects.get(name="Currysaus").pk)
+    sauzen.items.add(Item.objects.get(name="Satésaus (klein)").pk)
+    sauzen.items.add(Item.objects.get(name="Satésaus (groot)").pk)
 
 
 class Migration(migrations.Migration):
