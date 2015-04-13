@@ -24,7 +24,6 @@ def populate_fest(apps, schema_editor):
         if discounts:
             for discount in discounts:
                 item.discounts.add(discount)
-            item.save()
 
     add_item("Friet zonder (klein)", 160)
     add_item("Friet zonder (groot)", 210)

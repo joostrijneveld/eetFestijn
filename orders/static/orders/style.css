@@ -57,7 +57,7 @@ table.menu tr:not(:first-child) {
     cursor: pointer;
 }
 
-table.menu th:first-child {
+table.menu td:first-child {
     width:80%;
 }
 

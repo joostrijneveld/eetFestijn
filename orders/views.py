@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.conf import settings
 
-from orders.models import Item, Order, ItemOrder
+from orders.models import Item, Order, ItemOrder, Category
 from orders.forms import OrderForm
 from orders.templatetags.display_euro import euro
 
@@ -30,10 +30,14 @@ def index(request):
             return HttpResponseRedirect(reverse('orders:index'))
     else:
         form = OrderForm()
-    item_list = Item.objects.all()
-    col1 = item_list[:(len(item_list)+1)//2]
-    col2 = item_list[(len(item_list)+1)//2:]
-    context = {'col1': col1, 'col2': col2, 'form': form}
+    categories = Category.objects.all().prefetch_related('items')
+    total = Item.objects.count()
+    n = 0
+    col = {0: [], 1: []}
+    for category in categories:
+        col[0 if n < total/2 else 1].append(category)
+        n += category.items.count()
+    context = {'col1': col[0], 'col2': col[1], 'form': form}
     return render(request, 'orders/index.html', context)
 
 
