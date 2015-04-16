@@ -33,11 +33,11 @@ def index(request):
     categories = Category.objects.all().prefetch_related('items')
     total = Item.objects.count()
     n = 0
-    col = {0: [], 1: []}
+    cols = [[], []]
     for category in categories:
-        col[0 if n < total/2 else 1].append(category)
+        cols[0 if n < total/2 else 1].append(category)
         n += category.items.count()
-    context = {'col1': col[0], 'col2': col[1], 'form': form}
+    context = {'cols': cols, 'form': form}
     return render(request, 'orders/index.html', context)
 
 

@@ -39,10 +39,11 @@
             </div>
             <div class="col-sm-8 col-sm-offset-4 main">
                 <h2>Menu</h2>
-            {% if col1 %}
+            {% if cols.0 %}
                 <div class='row'>
+                    {% for col in cols %}
                     <div class="col-sm-6">
-                        {% for category in col1 %}
+                        {% for category in col %}
                         <h3>{{ category.name }}</h3>
                         <table class="table table-striped table-hover menu">
                             {% for item in category.items.all %}
@@ -58,23 +59,7 @@
                         </table>
                         {% endfor %}
                     </div>
-                    <div class="col-sm-6">
-                        {% for category in col2 %}
-                        <h3>{{ category.name }}</h3>
-                        <table class="table table-striped table-hover menu">
-                            {% for item in category.items.all %}
-                            <tr data-id='{{ item.pk }}' data-price='{{ item.real_price }}'>
-                                <td>{{ item.name }}</td>
-                                {% if item.real_price != item.price %}
-                                <td>{{ item.real_price | euro }}<br><span class='oldprice'>{{ item.price | euro }}</span></td>
-                                {% else %}
-                                <td>{{ item.real_price | euro }}</td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-                        </table>
-                        {% endfor %}
-                    </div>
+                    {% endfor %}
                 </div>
             {% else %}
                 <p>Geen menu beschikbaar.</p>
