@@ -45,10 +45,10 @@
                     <div class="col-sm-6">
                         {% for category in col %}
                         <h3>{{ category.name }}</h3>
-                        <table class="table table-striped table-hover menu">
+                        <table id="menu" class="table table-striped table-hover">
                             {% for item in category.items.all %}
                             <tr data-id='{{ item.pk }}' data-price='{{ item.real_price }}'>
-                                <td>{{ item.name }}</td>
+                                <td>{{ item.name }}<span class='ordered'></span></td>
                                 {% if item.real_price != item.price %}
                                 <td>{{ item.real_price | euro }}<br><span class='oldprice'>{{ item.price | euro }}</span></td>
                                 {% else %}
@@ -70,5 +70,6 @@
     {% bootstrap_javascript jquery=1 %}
     <script type="text/javascript" src="{% static 'orders/script.js' %}"></script>
     <div class='hidden' id='deleteicon'><a class='removelink text-danger'>{% bootstrap_icon "trash" %}</a></div>
+    <div class='hidden' id='okicon'><span class='text-success'>{% bootstrap_icon "ok" %}</span></div>
 </body>
 </html>

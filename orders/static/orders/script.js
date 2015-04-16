@@ -2,7 +2,7 @@ var menuJS = {
 
     init:function() {
         $('#submitbtn').prop('disabled', true);
-        $("table.menu tr").slice(1).click(function (e) {
+        $("table#menu tr").slice(1).click(function (e) {
             menuJS.add($(this));
         });
     },
@@ -23,16 +23,21 @@ var menuJS = {
         order.append($("<td>").html($(item_tr.children('td')[1]).html()));
         order.append($("<td>").html($("#deleteicon").html()));
         order.data('price', olddata['price']);
+        order.data('id', olddata['id']);
         order.click(function (e) {
             menuJS.remove($(this));
         });
         $("table#ordertable tr#total").before(order);
 
         this.updateTotal(olddata['price']);
+
+        item_tr.find('.ordered').append($('#okicon').html());
     },
 
     remove:function(item_tr) {
         this.updateTotal(-item_tr.data('price'));
+        var menu_tr = $("table#menu tr[data-id='"+ item_tr.data('id') +"']");
+        menu_tr.find('.ordered').children('span:first').remove();
         item_tr.remove();
     },
 

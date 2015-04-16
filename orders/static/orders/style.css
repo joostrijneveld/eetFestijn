@@ -53,17 +53,25 @@
     display: none;
 }
 
-table.menu tr:not(:first-child) {
+table#menu tr:not(:first-child) {
     cursor: pointer;
 }
 
-table.menu td:first-child {
+table#menu td:first-child {
     width:80%;
 }
 
 tr#nofood td {
     text-align: center;
     font-style: italic;
+}
+
+table#menu .ordered {
+    padding-left:10px;
+}
+
+table#ordertable .ordered {
+    display:none;
 }
 
 #ordertable tr:last-child th {
