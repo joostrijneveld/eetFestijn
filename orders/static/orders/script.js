@@ -2,7 +2,7 @@ var menuJS = {
 
     init:function() {
         $('#submitbtn').prop('disabled', true);
-        $("table#menu tr").slice(1).click(function (e) {
+        $("table#menu tr").on('click', function (e) {
             menuJS.add($(this));
         });
     },
@@ -24,8 +24,8 @@ var menuJS = {
         order.append($("<td>").html($("#deleteicon").html()));
         order.data('price', olddata['price']);
         order.data('id', olddata['id']);
-        order.click(function (e) {
-            menuJS.remove($(this));
+        order.find('.removelink').on('click', function (e) {
+            menuJS.remove($(order));
         });
         $("table#ordertable tr#total").before(order);
 

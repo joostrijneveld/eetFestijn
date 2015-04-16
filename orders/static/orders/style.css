@@ -53,7 +53,7 @@
     display: none;
 }
 
-table#menu tr:not(:first-child) {
+table#menu tr {
     cursor: pointer;
 }
 
