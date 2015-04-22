@@ -1,6 +1,7 @@
 from collections import Counter
 import json
-import urllib
+import urllib.request
+import urllib.parse
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
