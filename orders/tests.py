@@ -8,7 +8,7 @@ import datetime
 class ItemTestCase(TestCase):
     def test_real_price(self):
         knakworst = Item.objects.get(name="Knakworst")
-        friet = Item.objects.get(name="Friet zonder (klein)")
+        friet = Item.objects.get(name="Friet zonder (x personen)")
         aardappel = Item.objects.get(name="extra ras/aardappel")
         self.assertEqual(knakworst.real_price, 210)
         self.assertEqual(friet.real_price, 160)
@@ -24,7 +24,7 @@ class OrderTestCase(TestCase):
         Order.objects.create(name="Test Order 1")
         Order.objects.create(name="Test Order 2")
         knakworst = Item.objects.get(name="Knakworst")
-        friet = Item.objects.get(name="Friet zonder (klein)")
+        friet = Item.objects.get(name="Friet zonder (x personen)")
         aardappel = Item.objects.get(name="extra ras/aardappel")
         self.items = [knakworst, friet, aardappel]
 
@@ -70,7 +70,7 @@ class ItemOrderTestCase(TestCase):
         self.order1 = Order.objects.create(name="Test Order 1")
         self.order2 = Order.objects.create(name="Test Order 2")
         self.knakworst = Item.objects.get(name="Knakworst")
-        self.friet = Item.objects.get(name="Friet zonder (klein)")
+        self.friet = Item.objects.get(name="Friet zonder (x personen)")
 
     def test_str(self):
         for order in (self.order1, self.order2):
@@ -128,5 +128,5 @@ class DiscountTestCase(TestCase):
 
 class FestPopulateTestCase(TestCase):
     def test_totalnumber(self):
-        self.assertEqual(190, Item.objects.count())
+        self.assertEqual(190-2+1, Item.objects.count())
         self.assertEqual(3, Discount.objects.count())
