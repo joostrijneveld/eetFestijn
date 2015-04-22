@@ -4,7 +4,7 @@ import urllib.request
 import urllib.parse
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.conf import settings
@@ -12,6 +12,8 @@ from django.conf import settings
 from orders.models import Item, Order, ItemOrder, Category
 from orders.forms import OrderForm
 from orders.templatetags.display_euro import euro
+
+import weasyprint
 
 
 def index(request):
@@ -49,6 +51,14 @@ def summary(request):
             c.update([item.name])
     context = {'combined_order': sorted(dict(c).items())}
     return render(request, 'orders/summary.html', context)
+
+
+def summary_PDF(request):
+    html = summary(request).content
+    response = HttpResponse(content_type="application/pdf")
+    base_url = request.build_absolute_uri()
+    weasyprint.HTML(string=html, base_url=base_url).write_pdf(response)
+    return response
 
 
 def overview(request):
