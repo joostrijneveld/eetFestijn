@@ -31,6 +31,7 @@
                     </div>
                     <button type='submit' class='btn btn-primary' id='submitbtn'>Geef bestelling door</button>
                     <a class='btn btn-default' href="{% url 'orders:summary' %}">{% bootstrap_icon "print" %}</a>
+                    <a class='btn btn-default' href="{% url 'orders:summary_PDF' %}">{% bootstrap_icon "save" %}</a>
                     <a class='btn btn-default' href="{% url 'orders:overview' %}">{% bootstrap_icon "list" %}</a>
                 </form>
             </div>

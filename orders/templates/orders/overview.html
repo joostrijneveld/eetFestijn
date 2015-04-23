@@ -7,6 +7,7 @@
     <title>eetFestijn - overzicht</title>
     {% load bootstrap3 %}
     {% load display_euro %}
+    {% load absolute_reverse_url %}
     {% bootstrap_css %}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
@@ -16,8 +17,14 @@
             <div class="col-sm-4 col-sm-offset-4 main">
                 <h2>Bestellingen ({{ grandtotal | euro }})</h2>
                 <form role='form' method='post' style='margin-bottom:25px;'>
-                {% csrf_token %}
-                <p>Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.{% if slack %} Je kunt de huidige bestellingen ook delen via <button type='submit' name='slack' value='post' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestelling via Slack wilt delen?")'><i class="fa fa-slack"></i> Slack</button>{% endif %}</p>
+                    {% csrf_token %}
+                    <p>
+                        Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.{% if slack %} Je kunt de huidige bestellingen ook delen via <button type='submit' name='slack' value='post' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestelling via Slack wilt delen?")'><i class="fa fa-slack"></i> Slack</button>{% endif %}
+                    </p>
+                    <p>
+                        Tip! Stuur de bestellingen door naar de printer in M1:<br>
+                        <span style='font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;'>kinit &amp;&amp; curl {% absolute_reverse request 'orders:summary_PDF' %} | lpr -P pr-m1-00</span>
+                    </p>
                 </form>
                 {% bootstrap_messages %}
                 {% for order in orders %}
