@@ -9,6 +9,7 @@
     {% load display_euro %}
     {% bootstrap_css %}
     {% load staticfiles %}
+    {% load git_head %}
     <link rel="stylesheet" type="text/css" href="{% static 'orders/style.css' %}" />
 </head>
 <body>
@@ -36,7 +37,7 @@
                 </form>
             </div>
             <div class="col-sm-4 footer">
-                <p><a href='https://github.com/joostrijneveld/eetfestijn/'>eetFestijn v1</a></p>
+                <p><a href='https://github.com/joostrijneveld/eetfestijn/'>eetFestijn ({% git_head %})</a></p>
             </div>
             <div class="col-sm-8 col-sm-offset-4 main">
                 <h2>Menu</h2>
