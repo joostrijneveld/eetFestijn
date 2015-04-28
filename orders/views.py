@@ -33,7 +33,7 @@ def index(request):
             return HttpResponseRedirect(reverse('orders:index'))
     else:
         form = OrderForm()
-    categories = Category.objects.all().prefetch_related('items')
+    categories = Category.objects.all().prefetch_related('items__discounts')
     total = Item.objects.count()
     n = 0
     cols = [[], []]
