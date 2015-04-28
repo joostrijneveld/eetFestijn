@@ -8,7 +8,8 @@
     {% load bootstrap3 %}
     {% bootstrap_css %}
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'orders/summary.css' %}" />
+    {% load git_head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'orders/summary.css' %}?v={% git_head %}" />
 </head>
 <body>
     <div class="container-fluid">

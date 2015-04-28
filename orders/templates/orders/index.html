@@ -10,7 +10,7 @@
     {% bootstrap_css %}
     {% load staticfiles %}
     {% load git_head %}
-    <link rel="stylesheet" type="text/css" href="{% static 'orders/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'orders/style.css' %}?v={% git_head %}" />
 </head>
 <body>
     <div class="container-fluid">
@@ -31,9 +31,9 @@
                         </table>
                     </div>
                     <button type='submit' class='btn btn-primary' id='submitbtn'>Geef bestelling door</button>
-                    <a class='btn btn-default' href="{% url 'orders:summary' %}">{% bootstrap_icon "print" %}</a>
-                    <a class='btn btn-default' href="{% url 'orders:summary_PDF' %}">{% bootstrap_icon "save" %}</a>
-                    <a class='btn btn-default' href="{% url 'orders:overview' %}">{% bootstrap_icon "list" %}</a>
+                    <a class='btn btn-default' href="{% url 'orders:summary' %}" data-toggle="tooltip" data-placement="top" title="Printvriendelijk overzicht">{% bootstrap_icon "print" %}</a>
+                    <a class='btn btn-default' href="{% url 'orders:summary_PDF' %}" data-toggle="tooltip" data-placement="top" title="Overzicht als PDF-document">{% bootstrap_icon "save" %}</a>
+                    <a class='btn btn-default' href="{% url 'orders:overview' %}" data-toggle="tooltip" data-placement="top" title="Uitgebreid overzicht">{% bootstrap_icon "list" %}</a>
                 </form>
             </div>
             <div class="col-sm-4 footer">
@@ -70,7 +70,7 @@
         </div>
     </div>
     {% bootstrap_javascript jquery=1 %}
-    <script type="text/javascript" src="{% static 'orders/script.js' %}"></script>
+    <script type="text/javascript" src="{% static 'orders/script.js' %}?v={% git_head %}"></script>
     <div class='hidden' id='deleteicon'><a class='removelink text-danger'>{% bootstrap_icon "trash" %}</a></div>
     <div class='hidden' id='okicon'><span class='text-success'>{% bootstrap_icon "ok" %}</span></div>
 </body>

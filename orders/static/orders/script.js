@@ -54,3 +54,7 @@ var menuJS = {
     }
 };
 menuJS.init();
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
