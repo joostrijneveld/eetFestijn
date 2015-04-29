@@ -16,10 +16,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&oxv(647=t#u+x0_hbs2z!y4q%b+6y759rqn2wv!6v_k73-0$)'
+SECRET_KEY = 'OVERRIDE_ME'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
@@ -100,9 +100,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Slack integration
+# Override these settings in local_settings.py to enable
+
 # SLACK = {
 #     'webhook': 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX',
 #     'username': 'eetFestijn',
 #     'channel': '#random',
 #     'icon_emoji': ':fries:'
-#     }
+# }
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
