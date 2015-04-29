@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.functional import cached_property
+
 import datetime
 
 
@@ -14,7 +16,7 @@ class Item(models.Model):
         return ", ".join(map(str, self.discounts.all()))
     discountstring.short_description = 'Discounts'
 
-    @property
+    @cached_property
     def real_price(self):
         discounts = [x for x in self.discounts.all() if x.is_active()]
         price = self.price
