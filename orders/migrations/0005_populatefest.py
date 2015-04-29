@@ -112,7 +112,7 @@ def populate_fest(apps, schema_editor):
     add_item("Portie satéstokjes", 450)
     add_item("Satéschotel", 800, schoteldag)
 
-    add_item("Halve haan", 500, schoteldag)
+    add_item("Halve haan", 500)
     add_item("Halve-haan-schotel", 900, schoteldag)
 
     add_item("Broodje hamburger speciaal", 300)
