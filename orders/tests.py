@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.test import TestCase
 from orders.models import Item, Order, ItemOrder, Discount
-from django.core.management import call_command
+
 import datetime
 
 

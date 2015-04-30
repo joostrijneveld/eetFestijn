@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations
 
 
 def fix_frietzonder(apps, schema_editor):
@@ -13,6 +13,7 @@ def fix_frietzonder(apps, schema_editor):
     Item.objects.get(name="Friet zonder (groot)").delete()
     zonder = Item.objects.create(name="Friet zonder (x personen)", price=160)
     friet.items.add(zonder.pk)
+
 
 class Migration(migrations.Migration):
 

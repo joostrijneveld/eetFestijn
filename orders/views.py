@@ -27,7 +27,7 @@ def index(request):
             item_ids = request.POST.getlist('items[]')
             for item_id in item_ids:
                 item = Item.objects.get(pk=item_id)
-                order_item = ItemOrder.objects.create(item=item, order=order)
+                ItemOrder.objects.create(item=item, order=order)
             order.save()
             messages.success(request, "Bestelling succesvol doorgegeven!")
             return HttpResponseRedirect(reverse('orders:index'))
