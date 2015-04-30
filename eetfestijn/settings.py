@@ -50,12 +50,6 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
 ]
 
-if DEBUG:
-    INSTALLED_APPS.append('debug_toolbar')
-    INTERNAL_IPS = ('127.0.0.1',)
-    MIDDLEWARE_CLASSES.append(
-        'debug_toolbar.middleware.DebugToolbarMiddleware')
-
 ROOT_URLCONF = 'eetfestijn.urls'
 
 TEMPLATES = [
@@ -120,3 +114,9 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    INTERNAL_IPS = ('127.0.0.1',)
+    MIDDLEWARE_CLASSES.append(
+        'debug_toolbar.middleware.DebugToolbarMiddleware')
