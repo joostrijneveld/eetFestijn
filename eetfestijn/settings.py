@@ -28,7 +28,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,9 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'bootstrap3',
     'orders'
-)
+]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -48,7 +48,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-)
+]
+
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    INTERNAL_IPS = ('127.0.0.1',)
+    MIDDLEWARE_CLASSES.append(
+        'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'eetfestijn.urls'
 
