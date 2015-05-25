@@ -1,9 +1,9 @@
-from django import forms
+from django.forms import ModelForm
+from orders.models import Order
 
-
-class OrderForm(forms.Form):
-    name = forms.CharField(label='Naam', max_length=200)
-    wiebetaaltwat = forms.BooleanField(
-        label='Betaalt via Wiebetaaltwat.nl',
-        required=False,
-        initial=True)
+class OrderForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ['name', 'wiebetaaltwat']
+        labels = {'name': 'Naam',
+                  'wiebetaaltwat': 'Betaalt via Wiebetaaltwat.nl'}

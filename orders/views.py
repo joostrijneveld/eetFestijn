@@ -19,15 +19,11 @@ def index(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            order = Order()
-            order.name = form.cleaned_data['name']
-            order.wiebetaaltwat = form.cleaned_data['wiebetaaltwat']
-            order.save()  # need to save to get an id, to prevent ValueError
+            order = form.save()
             item_ids = request.POST.getlist('items[]')
             for item_id in item_ids:
                 item = Item.objects.get(pk=item_id)
                 ItemOrder.objects.create(item=item, order=order)
-            order.save()
             messages.success(request, "Bestelling succesvol doorgegeven!")
             return HttpResponseRedirect(reverse('orders:index'))
     else:
