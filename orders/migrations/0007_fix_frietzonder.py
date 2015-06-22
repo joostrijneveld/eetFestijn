@@ -11,7 +11,7 @@ def fix_frietzonder(apps, schema_editor):
 
     Item.objects.get(name="Friet zonder (klein)").delete()
     Item.objects.get(name="Friet zonder (groot)").delete()
-    zonder = Item.objects.create(name="Friet zonder (x personen)", price=160)
+    zonder = Item.objects.create(name="personen friet", price=160)
     friet.items.add(zonder.pk)
 
 
