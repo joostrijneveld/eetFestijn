@@ -80,6 +80,7 @@ class Category(models.Model):
 
 class Receipt(models.Model):
     contents = models.TextField()
+    date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.contents
