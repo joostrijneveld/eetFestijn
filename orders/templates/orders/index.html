@@ -50,7 +50,13 @@
                         <table id="menu" class="table table-striped table-hover">
                             {% for item in category.items.all %}
                             <tr data-id='{{ item.pk }}' data-price='{{ item.real_price }}'>
-                                <td>{{ item.name }}<span class='ordered'></span></td>
+                                <td>
+                                    {{ item.name }}
+                                    {% if item.description %}
+                                        <span class='description' data-toggle="tooltip" data-placement="top" title="{{ item.description }}">{% bootstrap_icon "info-sign" %}</span>
+                                    {% endif %}
+                                    <span class='ordered'></span>
+                                </td>
                                 {% if item.real_price != item.price %}
                                 <td>{{ item.real_price | euro }}<br><span class='oldprice'>{{ item.price | euro }}</span></td>
                                 {% else %}

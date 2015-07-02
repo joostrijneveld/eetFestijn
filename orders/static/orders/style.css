@@ -70,7 +70,12 @@ table#menu .ordered {
     padding-left:10px;
 }
 
-table#ordertable .ordered {
+table#menu .description {
+    padding-left:3px;
+}
+
+table#ordertable .ordered,
+table#ordertable .description {
     display:none;
 }
 

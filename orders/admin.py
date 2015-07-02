@@ -8,7 +8,7 @@ class ItemOrderInline(admin.TabularInline):
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'discountstring')
+    list_display = ('name', 'price', 'discountstring', 'description')
 
 
 class OrderAdmin(admin.ModelAdmin):
