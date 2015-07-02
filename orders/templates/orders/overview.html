@@ -8,8 +8,11 @@
     {% load bootstrap3 %}
     {% load display_euro %}
     {% load absolute_reverse_url %}
+    {% load staticfiles %}
+    {% load git_head %}
     {% bootstrap_css %}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'orders/overview.css' %}?v={% git_head %}" />
 </head>
 <body>
     <div class="container-fluid">
@@ -19,7 +22,7 @@
                 <form role='form' method='post' style='margin-bottom:25px;'>
                     {% csrf_token %}
                     <p>
-                        Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='remove' value='all' class='btn btn-danger btn-xs' onclick='return confirm("Weet je zeker dat je alle bestellingen wilt verwijderen?")'>alles verwijderen {% bootstrap_icon "trash" %}</button>.{% if slack %} Je kunt de huidige bestellingen ook delen via <button type='submit' name='slack' value='post' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestelling via Slack wilt delen?")'><i class="fa fa-slack"></i> Slack</button>{% endif %}
+                        Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='process' value='all' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestellingen wilt verwerken?")'>alles verwerken {% bootstrap_icon "tag" %}</button> om de lijst leeg te maken en een bonnetje te genereren. {% if slack %} Je kunt de huidige bestellingen ook delen via <button type='submit' name='slack' value='post' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestellingen via Slack wilt delen?")'><i class="fa fa-slack"></i> Slack</button>{% endif %}
                     </p>
                     <p>
                         Tip! Stuur de bestellingen door naar de printer in M1:<br>

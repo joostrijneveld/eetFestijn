@@ -76,3 +76,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Receipt(models.Model):
+    contents = models.TextField()
+
+    def __str__(self):
+        return self.contents

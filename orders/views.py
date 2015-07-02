@@ -7,8 +7,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.conf import settings
+from django.forms.models import model_to_dict
 
-from orders.models import Item, Order, ItemOrder, Category
+from orders.models import Item, Order, ItemOrder, Category, Receipt
 from orders.forms import OrderForm
 from orders.templatetags.display_euro import euro
 
@@ -58,16 +59,26 @@ def summary_PDF(request):
 
 def overview(request):
     if request.method == 'POST':
-        if 'remove' in request.POST:
-            if request.POST['remove'] == 'all':
+        if 'process' in request.POST:
+            orders = []
+            for order in Order.objects.all():
+                orderdict = model_to_dict(order)
+                orderdict['items'] = [{'name': item.name,
+                                       'price': item.real_price}
+                                      for item in order.items.all()]
+                orderdict['total'] = order.total()
+                orders.append(orderdict)
+            if orders:
+                receipt = {'grandtotal': Order.grandtotal(),
+                           'orders': orders}
+                Receipt(contents=json.dumps(receipt)).save()
                 Order.objects.all().delete()
-                messages.success(request, "Alle bestellingen verwijderd!")
-            else:
-                order = Order.objects.get(pk=request.POST['remove'])
-                msg = "Bestelling van {.name} verwijderd!".format(order)
-                order.delete()
-                messages.success(request, msg)
-            return HttpResponseRedirect(reverse('orders:overview'))
+            messages.success(request, "Alle bestellingen verwerkt!")
+        elif 'remove' in request.POST:
+            order = Order.objects.get(pk=request.POST['remove'])
+            msg = "Bestelling van {.name} verwijderd!".format(order)
+            order.delete()
+            messages.success(request, msg)
         elif 'slack' in request.POST and hasattr(settings, 'SLACK'):
             jsondata = {'text': 'Nieuwe bestelling!',
                         'channel': settings.SLACK['channel'],
@@ -84,7 +95,7 @@ def overview(request):
             req = urllib.request.Request(settings.SLACK['webhook'], data)
             urllib.request.urlopen(req)
             messages.success(request, "Bestellingen gedeeld via Slack!")
-            return HttpResponseRedirect(reverse('orders:overview'))
+        return HttpResponseRedirect(reverse('orders:overview'))
 
     orders = Order.objects.all()
     context = {'orders': orders, 'grandtotal': Order.grandtotal(),
