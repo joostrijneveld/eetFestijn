@@ -2,6 +2,7 @@ __pycache__
 db.sqlite3
 *.pyc
 .coverage
+.tox/
 htmlcov/
 venv/
 local_settings.py
