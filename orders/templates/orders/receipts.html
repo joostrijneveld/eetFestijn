@@ -17,6 +17,7 @@
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4 main">
                 <h2>Bonnetjes</h2>
+                {% if receipts %}
                 <select class="form-control" id='receipts'>
                     {% for receipt in receipts %}
                         <option value="{{ receipt.pk }}">
@@ -44,6 +45,9 @@
                     </table>
                 </div>
                 {% endfor %}
+                {% else %}
+                <p>Er zijn nog geen bestellingen gedaan waar bonnetjes van zijn bewaard.</p>
+                {% endif %}
             </div>
         </div>
     </div>
