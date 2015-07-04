@@ -1,0 +1,19 @@
+div.main {
+    padding:0px;
+}
+
+div.receipt {
+    margin-top:20px;
+    padding:20px;
+    display:none;
+    border:1px solid #DDD;
+}
+
+div.receipt th.total,
+div.receipt td.total {
+    text-align:right;
+}
+
+div.receipt table td:first-child{
+    width:80%;
+}

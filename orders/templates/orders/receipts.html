@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eetFestijn - bonnetjes</title>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% load display_euro %}
+    {% load staticfiles %}
+    {% load git_head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'orders/receipts.css' %}?v={% git_head %}" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 main">
+                <h2>Bonnetjes</h2>
+                <select class="form-control" id='receipts'>
+                    {% for receipt in receipts %}
+                        <option value="{{ receipt.pk }}">
+                            {{ receipt.date | date:'l, Y-m-d' }}
+                            ({{ receipt.dict.orders | length }} perso{{ receipt.dict.orders | pluralize:"on,nen" }},
+                            {{ receipt.dict.grandtotal | euro }})
+                        </option>
+                    {% endfor %}
+                </select>
+                {% for receipt in receipts %}
+                <div id='receipt{{ receipt.pk }}' class='receipt'>
+                    <h4>verwerkt op {{ receipt.date | date:'l, Y-m-d' }}</h4>
+                    <table class="table">
+                    {% for order in receipt.dict.orders %}
+                        <tr><th colspan='2'>{{ order.name }}</th></tr>
+                        {% for item in order.items %}
+                            <tr><td>{{ item.name }}</td><td>{{ item.price | euro }}</td></tr>
+                        {% endfor %}
+                        <tr><td class='total'>betaalt via wiebetaaltwat:</td><td>{{ order.wiebetaaltwat|yesno:"ja, nee" }}</td></tr>
+                        <tr><td class='total'>subtotaal:</td><td>{{ order.total | euro }}</td></tr>
+                    {% endfor %}
+                    <tfoot>
+                        <tr><th class='total'>totaal:</th><td>{{ receipt.dict.grandtotal | euro }}</td></tr>
+                    </tfoot>
+                    </table>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% bootstrap_javascript jquery=1 %}
+    <script type="text/javascript" src="{% static 'orders/receipts.js' %}?v={% git_head %}"></script>
+</body>
+</html>

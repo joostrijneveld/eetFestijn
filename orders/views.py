@@ -57,6 +57,13 @@ def summary_PDF(request):
     return response
 
 
+def receipts(request):
+    receipts = Receipt.objects.order_by('-date')
+    for receipt in receipts:
+        receipt.dict = json.loads(receipt.contents)
+    return render(request, 'orders/receipts.html', {'receipts': receipts})
+
+
 def overview(request):
     if request.method == 'POST':
         if 'process' in request.POST:
