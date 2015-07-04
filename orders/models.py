@@ -73,6 +73,7 @@ class Discount(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=200)
     items = models.ManyToManyField(Item)
+    random_item = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
         return self.name

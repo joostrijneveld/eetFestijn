@@ -49,8 +49,14 @@
                         {% for category in col %}
                         <h3>{{ category.name }}</h3>
                         <table id="menu" class="table table-striped table-hover">
+                            {% if category.random_item %}
+                            <tr class='randomitem'>
+                                <td>{{ category.random_item }}</td>
+                                <td>{% bootstrap_icon "random" %}</td>
+                            </tr>
+                            {% endif %}
                             {% for item in category.items.all %}
-                            <tr data-id='{{ item.pk }}' data-price='{{ item.real_price }}'>
+                            <tr class='item' data-id='{{ item.pk }}' data-price='{{ item.real_price }}'>
                                 <td>
                                     {{ item.name }}
                                     {% if item.description %}

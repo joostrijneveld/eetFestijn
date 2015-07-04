@@ -2,8 +2,12 @@ var menuJS = {
 
     init:function() {
         $('#submitbtn').prop('disabled', true);
-        $("table#menu tr").on('click', function (e) {
+        $("table#menu tr.item").on('click', function (e) {
             menuJS.add($(this));
+        });
+        $("table#menu tr.randomitem").on('click', function (e) {
+            var siblings = $(this).siblings();
+            siblings[Math.floor(Math.random() * siblings.length)].click();
         });
     },
 
