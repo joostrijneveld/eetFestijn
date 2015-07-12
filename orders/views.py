@@ -26,7 +26,7 @@ def index(request):
                 item = Item.objects.get(pk=item_id)
                 ItemOrder.objects.create(item=item, order=order)
             messages.success(request, "Bestelling succesvol doorgegeven!")
-            return HttpResponseRedirect(reverse('orders:index'))
+            return HttpResponseRedirect(reverse('index'))
     else:
         form = OrderForm()
     categories = Category.objects.all().prefetch_related('items__discounts')
@@ -102,7 +102,7 @@ def overview(request):
             req = urllib.request.Request(settings.SLACK['webhook'], data)
             urllib.request.urlopen(req)
             messages.success(request, "Bestellingen gedeeld via Slack!")
-        return HttpResponseRedirect(reverse('orders:overview'))
+        return HttpResponseRedirect(reverse('overview'))
 
     orders = Order.objects.all()
     context = {'orders': orders, 'grandtotal': Order.grandtotal(),

@@ -31,10 +31,10 @@
                         </table>
                     </div>
                     <button type='submit' class='btn btn-primary' id='submitbtn'>Geef bestelling door</button>
-                    <a class='btn btn-default' href="{% url 'orders:summary' %}" data-toggle="tooltip" data-placement="top" title="Printvriendelijk overzicht">{% bootstrap_icon "print" %}</a>
-                    <a class='btn btn-default' href="{% url 'orders:summary_PDF' %}" data-toggle="tooltip" data-placement="top" title="Overzicht als PDF-document">{% bootstrap_icon "save" %}</a>
-                    <a class='btn btn-default' href="{% url 'orders:overview' %}" data-toggle="tooltip" data-placement="top" title="Uitgebreid overzicht">{% bootstrap_icon "list" %}</a>
-                    <a class='btn btn-default' href="{% url 'orders:receipts' %}" data-toggle="tooltip" data-placement="top" title="Bonnetjes">{% bootstrap_icon "tags" %}</a>
+                    <a class='btn btn-default' href="{% url 'summary' %}" data-toggle="tooltip" data-placement="top" title="Printvriendelijk overzicht">{% bootstrap_icon "print" %}</a>
+                    <a class='btn btn-default' href="{% url 'summary_PDF' %}" data-toggle="tooltip" data-placement="top" title="Overzicht als PDF-document">{% bootstrap_icon "save" %}</a>
+                    <a class='btn btn-default' href="{% url 'overview' %}" data-toggle="tooltip" data-placement="top" title="Uitgebreid overzicht">{% bootstrap_icon "list" %}</a>
+                    <a class='btn btn-default' href="{% url 'receipts' %}" data-toggle="tooltip" data-placement="top" title="Bonnetjes">{% bootstrap_icon "tags" %}</a>
                 </form>
             </div>
             <div class="col-sm-4 footer">
