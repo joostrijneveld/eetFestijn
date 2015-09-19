@@ -10,6 +10,7 @@
     {% load absolute_reverse_url %}
     {% load staticfiles %}
     {% load git_head %}
+    {% load real_price_at %}
     {% bootstrap_css %}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'orders/overview.css' %}?v={% git_head %}" />
@@ -41,12 +42,13 @@
                                 {% else %}
                                 <span class='text-danger'>{% bootstrap_icon "remove" %}</span>
                                 {% endif %})
+                                <div class='ordertime'>{{ order.date | date:'Y-m-d H:i'}}</div>
                             </th>
                             <th>{{ order.total | euro }}</th>
                             <th><button name='remove' value='{{ order.pk }}' type='submit' class='btn btn-danger btn-xs' onclick="return confirm('Weet je zeker dat je deze bestelling van {{ order.name}} wilt verwijderen?')">{% bootstrap_icon 'trash' %}</button></th>
                         </tr>
                         {% for item in order.items.all %}
-                        <tr><td>{{ item.name }}</td><td>{{ item.real_price | euro }}</td><td></td></tr>
+                        <tr><td>{{ item.name }}</td><td>{{ item | real_price_at:order.date | euro }}</td><td></td></tr>
                         {% endfor %}
                     </table>
                 </form>

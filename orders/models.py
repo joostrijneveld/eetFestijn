@@ -1,7 +1,5 @@
 from django.db import models
-from django.utils.functional import cached_property
-
-import datetime
+from django.utils import timezone
 
 
 class Item(models.Model):
@@ -17,9 +15,8 @@ class Item(models.Model):
         return ", ".join(map(str, self.discounts.all()))
     discountstring.short_description = 'Discounts'
 
-    @cached_property
-    def real_price(self):
-        discounts = [x for x in self.discounts.all() if x.is_active()]
+    def real_price(self, moment=None):
+        discounts = [x for x in self.discounts.all() if x.is_active(moment)]
         price = self.price
         if not all(x.relative for x in discounts):
             price = min(x.value for x in discounts if not x.relative)
@@ -31,6 +28,7 @@ class Order(models.Model):
     name = models.CharField(max_length=200)
     wiebetaaltwat = models.BooleanField('Via Wiebetaaltwat', default=True)
     items = models.ManyToManyField(Item, through='ItemOrder')
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name + ": " + ", ".join(map(str, self.items.all()))
@@ -40,7 +38,7 @@ class Order(models.Model):
     itemstring.short_description = 'Items'
 
     def total(self):
-        return sum(x.real_price for x in self.items.all())
+        return sum(x.real_price(self.date) for x in self.items.all())
     total.short_description = 'Total'
 
     @staticmethod
@@ -65,8 +63,10 @@ class Discount(models.Model):
     def __str__(self):
         return self.name
 
-    def is_active(self):
-        currentday = datetime.datetime.today().weekday()
+    def is_active(self, moment=None):
+        if moment is None:
+            moment = timezone.now()
+        currentday = moment.weekday()
         return self.days and currentday in map(int, self.days.split(','))
 
 
@@ -81,7 +81,7 @@ class Category(models.Model):
 
 class Receipt(models.Model):
     contents = models.TextField()
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.contents

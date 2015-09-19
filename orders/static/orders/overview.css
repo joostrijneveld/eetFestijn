@@ -1,3 +1,10 @@
 div.main {
     padding:0px;
 }
+
+div.ordertime {
+    font-weight:normal;
+    font-size:8pt;
+    float:right;
+    padding-top:4px;
+}

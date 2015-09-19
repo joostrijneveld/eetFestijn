@@ -71,7 +71,7 @@ def overview(request):
             for order in Order.objects.all():
                 orderdict = model_to_dict(order)
                 orderdict['items'] = [{'name': item.name,
-                                       'price': item.real_price}
+                                       'price': item.real_price(order.date)}
                                       for item in order.items.all()]
                 orderdict['total'] = order.total()
                 orders.append(orderdict)
@@ -94,7 +94,8 @@ def overview(request):
             for order in Order.objects.all():
                 jsondata['text'] += '\n*{}* ({}):'.format(
                     order.name, euro(order.total()))
-                items = [' {} ({})'.format(item.name, euro(item.real_price))
+                items = [' {} ({})'.format(item.name,
+                                           euro(item.real_price(order.date)))
                          for item in order.items.all()]
                 jsondata['text'] += ', '.join(items)
             payload = {'payload': json.dumps(jsondata)}

@@ -1,8 +1,7 @@
 # coding=utf-8
 from django.test import TestCase
 from orders.models import Item, Order, ItemOrder, Discount
-
-import datetime
+from django.utils import timezone
 
 
 class ItemTestCase(TestCase):
@@ -10,9 +9,9 @@ class ItemTestCase(TestCase):
         knakworst = Item.objects.get(name="Knakworst")
         friet = Item.objects.get(name="Friet oorlog (klein)")
         aardappel = Item.objects.get(name="extra ras/aardappel")
-        self.assertEqual(knakworst.real_price, 210)
-        self.assertEqual(friet.real_price, 240)
-        self.assertEqual(aardappel.real_price, 25)
+        self.assertEqual(knakworst.real_price(), 210)
+        self.assertEqual(friet.real_price(), 240)
+        self.assertEqual(aardappel.real_price(), 25)
 
     def test_name(self):
         knakworst = Item.objects.get(name="Knakworst")
@@ -83,25 +82,25 @@ class DiscountTestCase(TestCase):
     def setUp(self):
         self.testdiscount1 = Discount.objects.create(
             name="Test Discount 1", relative=True, value=200,
-            days=str(datetime.datetime.today().weekday()))
+            days=str(timezone.now().weekday()))
         self.testdiscount2 = Discount.objects.create(
             name="Test Discount 2", relative=False, value=600,
-            days=str(datetime.datetime.today().weekday()))
+            days=str(timezone.now().weekday()))
 
     def test_relative_discount(self):
         item = Item.objects.create(name="Testitem", price=800)
         item.discounts.add(self.testdiscount1)
-        self.assertEqual(item.real_price, 600)
+        self.assertEqual(item.real_price(), 600)
 
     def test_absolute_discount(self):
         item = Item.objects.create(name="Testitem", price=700)
         item.discounts.add(self.testdiscount2)
-        self.assertEqual(item.real_price, 600)
+        self.assertEqual(item.real_price(), 600)
 
     def test_absolute_cheaper(self):
         item = Item.objects.create(name="Testitem", price=500)
         item.discounts.add(self.testdiscount2)
-        self.assertEqual(item.real_price, 500)
+        self.assertEqual(item.real_price(), 500)
 
     def test_active(self):
         self.assertTrue(self.testdiscount1.is_active())
