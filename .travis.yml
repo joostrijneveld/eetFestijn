@@ -2,21 +2,22 @@ language: python
 sudo: false
 
 python:
-    - "2.7"
-    - "3.3"
-    - "3.4"
+  - "2.7"
+  - "3.3"
+  - "3.4"
 
-before_install:
-  - sudo apt-get update 
-  - sudo apt-get --reinstall install -qq language-pack-nl
+addons:
+  apt:
+    packages:
+      - language-pack-nl
 
 install:
-    - pip install -r requirements.txt
-    - pip install coveralls
+  - pip install -r requirements.txt
+  - pip install coveralls
 
 script:
-    - python manage.py test
-    - coverage run --source=orders --omit="*/migrations/*" manage.py test
+  - python manage.py test
+  - coverage run --source=orders --omit="*/migrations/*" manage.py test
 
 after_success:
-    - coveralls
+  - coveralls
