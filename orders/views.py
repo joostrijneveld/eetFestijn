@@ -14,6 +14,7 @@ from orders.forms import OrderForm
 from orders.templatetags.display_euro import euro
 
 import weasyprint
+from orders.utils import DateTimeEncoder
 
 
 def index(request):
@@ -60,6 +61,7 @@ def summary_PDF(request):
 def receipts(request):
     receipts = Receipt.objects.order_by('-date')
     for receipt in receipts:
+        # note that this does not decode datetime, but template tags fix this
         receipt.dict = json.loads(receipt.contents)
     return render(request, 'orders/receipts.html', {'receipts': receipts})
 
@@ -78,7 +80,8 @@ def overview(request):
             if orders:
                 receipt = {'grandtotal': Order.grandtotal(),
                            'orders': orders}
-                Receipt(contents=json.dumps(receipt)).save()
+                contents = json.dumps(receipt, cls=DateTimeEncoder)
+                Receipt(contents=contents).save()
                 Order.objects.all().delete()
             messages.success(request, "Alle bestellingen verwerkt!")
         elif 'remove' in request.POST:
