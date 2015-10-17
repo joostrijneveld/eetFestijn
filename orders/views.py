@@ -14,6 +14,7 @@ from orders.forms import OrderForm
 from orders.templatetags.display_euro import euro
 
 import weasyprint
+import dateutil.parser
 from orders.utils import DateTimeEncoder
 
 
@@ -61,8 +62,11 @@ def summary_PDF(request):
 def receipts(request):
     receipts = Receipt.objects.order_by('-date')
     for receipt in receipts:
-        # note that this does not decode datetime, but template tags fix this
         receipt.dict = json.loads(receipt.contents)
+        if receipt.dict['orders'] and 'date' in receipt.dict['orders'][0]:
+            for order in receipt.dict['orders']:
+                    order['date'] = dateutil.parser.parse(order['date'])
+            receipt.latest = min(x['date'] for x in receipt.dict['orders'])
     return render(request, 'orders/receipts.html', {'receipts': receipts})
 
 

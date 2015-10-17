@@ -10,6 +10,7 @@ lxml==3.4.3
 Pillow==2.8.1
 pycparser==2.12
 Pyphen==0.9.1
+python-dateutil==2.4.2
 six==1.9.0
 sqlparse==0.1.15
 tinycss==0.3

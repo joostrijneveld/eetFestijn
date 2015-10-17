@@ -21,7 +21,11 @@
                 <select class="form-control" id='receipts'>
                     {% for receipt in receipts %}
                         <option value="{{ receipt.pk }}">
-                            {{ receipt.date | date:'l, Y-m-d' }}
+                            {% if receipt.latest %}
+                                {{ receipt.latest | date:'l, Y-m-d' }}
+                            {% else %}
+                                {{ receipt.date | date:'l, Y-m-d' }}
+                            {% endif %}
                             ({{ receipt.dict.orders | length }} perso{{ receipt.dict.orders | pluralize:"on,nen" }},
                             {{ receipt.dict.grandtotal | euro }})
                         </option>
@@ -29,10 +33,20 @@
                 </select>
                 {% for receipt in receipts %}
                 <div id='receipt{{ receipt.pk }}' class='receipt'>
-                    <h4>verwerkt op {{ receipt.date | date:'l, Y-m-d' }}</h4>
+                    <h5>verwerkt op {{ receipt.date | date:'l, Y-m-d' }}</h5>
+                    {% if receipt.latest %}
+                        <h5>laatste bestelling op {{ receipt.latest | date:'l, Y-m-d' }}</h5>
+                    {% endif %}
                     <table class="table">
                     {% for order in receipt.dict.orders %}
-                        <tr><th colspan='2'>{{ order.name }}</th></tr>
+                        <tr>
+                            <th colspan='2'>
+                                {{ order.name }}
+                                <div class='ordertime'>
+                                    {{ order.date | date:'Y-m-d H:i' }}
+                                </div>
+                            </th>
+                        </tr>
                         {% for item in order.items %}
                             <tr><td>{{ item.name }}</td><td>{{ item.price | euro }}</td></tr>
                         {% endfor %}
