@@ -7,6 +7,7 @@ class Item(models.Model):
     price = models.IntegerField(default=0)
     discounts = models.ManyToManyField('Discount', blank=True)
     description = models.CharField(max_length=200, blank=True)
+    _printable_name = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
         return self.name
@@ -14,6 +15,12 @@ class Item(models.Model):
     def discountstring(self):
         return ", ".join(map(str, self.discounts.all()))
     discountstring.short_description = 'Discounts'
+
+    @property
+    def printable_name(self):
+        if self._printable_name:
+            return self._printable_name
+        return self.name
 
     def real_price(self, moment=None):
         discounts = [x for x in self.discounts.all() if x.is_active(moment)]

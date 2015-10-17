@@ -46,7 +46,7 @@ def summary(request):
     c = Counter()
     for order in Order.objects.all():
         for item in order.items.all():
-            c.update([item.name])
+            c.update([item.printable_name])
     context = {'combined_order': sorted(dict(c).items())}
     return render(request, 'orders/summary.html', context)
 
