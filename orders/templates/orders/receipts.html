@@ -64,6 +64,11 @@
                 {% endif %}
             </div>
         </div>
+        <div class="row">
+           <div class="col-sm-4 col-sm-offset-4">
+               <a href="{% url 'index' %}" role="button" class="btn btn-default btn-block"><span class="glyphicon glyphicon-chevron-left"></span>Ga terug naar de hoofdpagina</a>
+            </div>
+        </div>
     </div>
     {% bootstrap_javascript jquery=1 %}
     <script type="text/javascript" src="{% static 'orders/receipts.js' %}?v={% git_head %}"></script>
