@@ -45,13 +45,10 @@
                             {% bootstrap_icon 'print' %}
                             printvriendelijke overzicht
                         </a>.
-
                     </p>
                     <p>
                         Tip! Stuur de bestellingen door naar de printer in M1:<br>
                         <span style='font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;'>kinit &amp;&amp; curl {% absolute_reverse request 'summary_PDF' %} | lpr -P pr-m1-00 -o SelectColor=Grayscale</span>
-                    </p>
-                    <p>
                     </p>
                 </form>
                 {% bootstrap_messages %}

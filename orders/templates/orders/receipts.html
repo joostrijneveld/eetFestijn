@@ -66,7 +66,10 @@
         </div>
         <div class="row">
            <div class="col-sm-4 col-sm-offset-4">
-               <a href="{% url 'index' %}" role="button" class="btn btn-default btn-block"><span class="glyphicon glyphicon-chevron-left"></span>Ga terug naar de hoofdpagina</a>
+               <a href="{% url 'index' %}" role="button" class="btn btn-default btn-block">
+                   {% bootstrap_icon 'chevron-left' %}
+                   Ga terug naar de hoofdpagina
+               </a>
             </div>
         </div>
     </div>
