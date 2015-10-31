@@ -23,7 +23,28 @@
                 <form role='form' method='post' style='margin-bottom:25px;'>
                     {% csrf_token %}
                     <p>
-                        Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw wilt beginnen met een lege lijst bestellingen, klik dan op <button type='submit' name='process' value='all' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestellingen wilt verwerken?")'>alles verwerken {% bootstrap_icon "tag" %}</button> om de lijst leeg te maken en een bonnetje te genereren. {% if slack %} Je kunt de huidige bestellingen ook delen via <button type='submit' name='slack' value='post' class='btn btn-success btn-xs' onclick='return confirm("Weet je zeker dat je de bestellingen via Slack wilt delen?")'><i class="fa fa-slack"></i> Slack</button>{% endif %}
+
+                        Hieronder staan de bestellingen zoals ze nu zijn. Als je weer helemaal opnieuw
+                        wilt beginnen met een lege lijst bestellingen, klik dan op
+                        <button type="submit" name="process" value="all"
+                                class="btn btn-success btn-xs"
+                                onclick="return confirm('Weet je zeker dat je de bestellingen wilt verwerken?')">
+                                alles verwerken {% bootstrap_icon 'tag' %}
+                        </button>
+                        om de lijst leeg te maken en een bonnetje te genereren.
+                        {% if slack %}
+                            Je kunt de huidige bestellingen ook delen via
+                            <button type="submit" name="slack" value="post" class="btn btn-success btn-xs"
+                                    onclick="return confirm('Weet je zeker dat je de bestellingen via Slack wilt delen?')">
+                                    <i class="fa fa-slack"></i>
+                                    Slack
+                            </button>
+                        {% endif %}
+                        Zie ook het
+                        <a class="btn btn-default btn-xs" role="button" href="{% url 'summary' %}">
+                            {% bootstrap_icon 'print' %}
+                            printvriendelijke overzicht
+                        </a>.
                     </p>
                     <p>
                         Tip! Stuur de bestellingen door naar de printer in M1:<br>
@@ -55,6 +76,10 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="row">
+           <div class="col-sm-4 col-sm-offset-4">
+               <a href="{% url 'index' %}" role="button" class="btn btn-default btn-block"><span class="glyphicon glyphicon-chevron-left"></span>Ga terug naar de hoofdpagina</a>
+            </div>
     </div>
     {% bootstrap_javascript jquery=1 %}
 </body>

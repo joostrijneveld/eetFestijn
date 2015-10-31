@@ -5,3 +5,9 @@ body {
 div.main {
     padding:50px 0;
 }
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
