@@ -3,7 +3,7 @@ div.main {
 }
 
 div.receipt {
-    margin-top:20px;
+    margin: 20px 0;
     padding:20px;
     display:none;
     border:1px solid #DDD;
