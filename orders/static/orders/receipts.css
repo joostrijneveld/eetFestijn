@@ -24,3 +24,7 @@ div.ordertime {
     float:right;
     padding-top:4px;
 }
+
+.btn-block {
+    margin-bottom:20px;
+}

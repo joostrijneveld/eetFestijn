@@ -11,3 +11,7 @@ div.main {
         display: none !important;
     }
 }
+
+.btn-block {
+    margin-bottom:20px;
+}
