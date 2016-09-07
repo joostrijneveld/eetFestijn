@@ -47,8 +47,8 @@
                         </a>.
                     </p>
                     <p>
-                        Tip! Stuur de bestellingen door naar de printer in M1:<br>
-                        <span style='font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;'>kinit &amp;&amp; curl {% absolute_reverse request 'summary_PDF' %} | lpr -P pr-m1-00 -o SelectColor=Grayscale</span>
+                        Tip! Stuur de bestellingen door naar alle Péageprinters met deze handige bash-oneliner:<br>
+                        <span style='font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;'>FNAME=`mktemp`; read -rp 'ru\sXXXXXXX?: ' UNAME &amp;&amp; curl -sSo ${FNAME} {% absolute_reverse request 'summary_PDF' %} &amp;&amp; smbclient -U ${UNAME} //payprint01.ru.nl/RU-Print -c "print ${FNAME}" &amp;&amp; rm ${FNAME}</span>
                     </p>
                 </form>
                 {% bootstrap_messages %}
