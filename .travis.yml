@@ -12,6 +12,7 @@ addons:
       - language-pack-nl
 
 install:
+  - pip install --upgrade pip setuptools
   - pip install -r requirements.txt
   - pip install coveralls
 
