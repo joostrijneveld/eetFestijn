@@ -1,3 +1,4 @@
+beautifulsoup4==4.5.1
 cairocffi==0.7.2
 CairoSVG==1.0.22
 cffi==1.8.3
@@ -10,6 +11,7 @@ Pillow==3.3.1
 pycparser==2.14
 Pyphen==0.9.4
 python-dateutil==2.5.3
+requests==2.11.1
 six==1.10.0
 sqlparse==0.2.1
 tinycss==0.4
