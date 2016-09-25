@@ -7,7 +7,6 @@
     <title>eetFestijn - overzicht</title>
     {% load bootstrap3 %}
     {% load display_euro %}
-    {% load absolute_reverse_url %}
     {% load staticfiles %}
     {% load git_head %}
     {% load real_price_at %}
@@ -48,7 +47,11 @@
                     </p>
                     <p>
                         Tip! Stuur de bestellingen door naar alle Péageprinters met deze handige bash-oneliner:<br>
-                        <span style='font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;'>FNAME=`mktemp`; read -rp 'ru\sXXXXXXX?: ' UNAME &amp;&amp; curl -sSo ${FNAME} {% absolute_reverse request 'summary_PDF' %} &amp;&amp; smbclient -U ${UNAME} //payprint01.ru.nl/RU-Print -c "print ${FNAME}" &amp;&amp; rm ${FNAME}</span>
+                        <span style='font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;'>{% include 'orders/printscript.html' %}</span>
+                    </p>
+                    <p>
+                        Als je graag op het randje leeft kan dat ook met:<br>
+                        <span style='font-size:12px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;'>curl https://joostrijneveld.nl/eetfestijn/print | sh</span>
                     </p>
                 </form>
                 {% bootstrap_messages %}
@@ -113,6 +116,7 @@
            <div class="col-sm-4 col-sm-offset-4">
                <a href="{% url 'index' %}" role="button" class="btn btn-default btn-block"><span class="glyphicon glyphicon-chevron-left"></span>Ga terug naar de hoofdpagina</a>
             </div>
+        </div>
     </div>
     {% bootstrap_javascript jquery=1 %}
 </body>

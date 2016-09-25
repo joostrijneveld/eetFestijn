@@ -80,6 +80,11 @@ def summary_PDF(request):
     return response
 
 
+def print_script(request):
+    return render(request, 'orders/printscript.html',
+                  content_type='text/plain')
+
+
 def receipts(request):
     receipts = Receipt.objects.order_by('-date')
     for receipt in receipts:

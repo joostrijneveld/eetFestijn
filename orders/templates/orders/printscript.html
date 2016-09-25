@@ -1,0 +1,1 @@
+{% load absolute_reverse_url %}FNAME=`mktemp`; read -rp 'ru\sXXXXXXX?: ' UNAME && curl -sSo ${FNAME} {% absolute_reverse request 'summary_PDF' %} && smbclient -U ${UNAME} //payprint01.ru.nl/RU-Print -c "print ${FNAME}" && rm ${FNAME}
