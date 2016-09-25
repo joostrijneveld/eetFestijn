@@ -127,5 +127,5 @@ class DiscountTestCase(TestCase):
 
 class FestPopulateTestCase(TestCase):
     def test_totalnumber(self):
-        self.assertEqual(190-2+1+19, Item.objects.count())
+        self.assertEqual(190-2+1+20, Item.objects.count())
         self.assertEqual(3, Discount.objects.count())
