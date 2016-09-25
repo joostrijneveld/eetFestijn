@@ -20,10 +20,40 @@
                 <form role="form" method="post">
                     {% csrf_token %}
                     {% bootstrap_messages %}
-                    {% bootstrap_form form %}
-                    {% bootstrap_form_errors form type='non_fields' %}
+                    <p>Hoe wil je betalen?</p>
+                    <ul class="nav nav-pills" style='display:inline-block'>
+                        <li class="active"><a class='paymentmethod' data-method='participant' data-toggle="pill" href="#" data-target="#participate-tab, #no-name-tab">- Ik sta op de wiebetaaltwat-lijst</a></li>
+                        <li><a class='paymentmethod' data-method='bystander' data-toggle="pill" href="#" data-target="#participate-tab, #name-tab">- Ik betaal aan iemand die op de wiebetaaltwat-lijst staat</a></li>
+                        <li><a class='paymentmethod' data-method='outoflist' data-toggle="pill" href="#" data-target="#no-participate-tab, #name-tab">- We regelen het buiten de lijst om</a></li>
+                    </ul>
+                    <input type='hidden' name='paymentmethod' value='participant' />
+                    <hr>
+                    <div class="tab-content">
+                        <div id="name-tab" class="tab-pane">
+                            <div class="form-group">
+                                <label class="control-label" for="id_name">Naam</label>
+                                <input class="form-control" id="id_name" maxlength="200" name="name" placeholder="Naam" title="" type="text"/>
+                            </div>
+                        </div>
+                        <div id="no-name-tab" class="tab-pane"></div>
+                    </div>
+                    <div class="tab-content">
+                        <div id="participate-tab" class="tab-pane active">
+                            <div class="form-group">
+                                <label class="control-label" for="id_participant">Lijst-deelnemer</label>
+                                <select class="form-control" id="id_participant" name="participant">
+                                    <option value="none" selected="selected">---------</option>
+                                    {% for participant in participants %}
+                                    <option value="{{ participant.wbw_id }}">{{ participant.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div id="no-participate-tab" class="tab-pane"></div>
+                    </div>
+                    <hr>
                     <div class="form-group">
-                        <label class="control-label" for="id_name">Voedsels</label>
+                        <label class="control-label">Voedsels</label>
                         <table class="table table-striped" id='ordertable'>
                             <tr><th style='width:70%'>Naam</th><th style='width:20%'>Prijs</th><th></th></tr>
                             <tr id='nofood'><td colspan='3'>Nog geen voedsels geselecteerd</td></tr>

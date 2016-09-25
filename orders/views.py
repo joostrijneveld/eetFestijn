@@ -1,6 +1,7 @@
 from collections import Counter
 import json
 from six.moves import urllib
+from datetime import datetime
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -8,10 +9,13 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.conf import settings
 from django.forms.models import model_to_dict
+from django.db.models import Q
+from django.utils.timezone import localtime
 
 from orders.models import Item, Order, ItemOrder, Category, Receipt
-from orders.forms import OrderForm
 from orders.templatetags.display_euro import euro
+from wiebetaaltwat.models import Participant
+from wiebetaaltwat.views import _create_wbw_session
 
 import weasyprint
 import dateutil.parser
@@ -20,17 +24,34 @@ from orders.utils import DateTimeEncoder
 
 def index(request):
     if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save()
+        error = False
+        order = Order()
+        order.paymentmethod = request.POST.get('paymentmethod')
+        if order.paymentmethod in ['participant', 'bystander']:
+            try:
+                wbw_id = int(request.POST.get('participant', 'none'))
+                order.participant = Participant.objects.get(wbw_id=wbw_id)
+                if order.paymentmethod == 'participant':
+                    order.name = order.participant.name
+            except:
+                messages.error(request, "Je hebt niet aangegeven wie betaalt.")
+                error = True
+        if order.paymentmethod in ['outoflist', 'bystander']:
+            try:
+                order.name = request.POST.get('name')
+                if not order.name:
+                    raise ValueError("Name variable not defined.")
+            except:
+                messages.error(request, "Je hebt geen naam opgegeven.")
+                error = True
+        if not error:
+            order.save()
             item_ids = request.POST.getlist('items[]')
             for item_id in item_ids:
                 item = Item.objects.get(pk=item_id)
                 ItemOrder.objects.create(item=item, order=order)
             messages.success(request, "Bestelling succesvol doorgegeven!")
             return HttpResponseRedirect(reverse('index'))
-    else:
-        form = OrderForm()
     categories = Category.objects.all().prefetch_related('items__discounts')
     total = Item.objects.count()
     n = 0
@@ -38,7 +59,7 @@ def index(request):
     for category in categories:
         cols[0 if n < total/2 else 1].append(category)
         n += category.items.count()
-    context = {'cols': cols, 'form': form}
+    context = {'cols': cols, 'participants': Participant.objects.all()}
     return render(request, 'orders/index.html', context)
 
 
@@ -71,6 +92,10 @@ def receipts(request):
 
 
 def overview(request):
+    wbw_orders = (Order.objects.filter(paid=False)
+                               .filter(Q(paymentmethod='participant') |
+                                       Q(paymentmethod='bystander')))
+
     if request.method == 'POST':
         if 'process' in request.POST:
             orders = []
@@ -79,6 +104,8 @@ def overview(request):
                 orderdict['items'] = [{'name': item.name,
                                        'price': item.real_price(order.date)}
                                       for item in order.items.all()]
+                if order.participant:
+                    orderdict['participant'] = order.participant.name
                 orderdict['total'] = order.total()
                 orders.append(orderdict)
             if orders:
@@ -110,9 +137,35 @@ def overview(request):
             req = urllib.request.Request(settings.SLACK['webhook'], data)
             urllib.request.urlopen(req)
             messages.success(request, "Bestellingen gedeeld via Slack!")
+        elif 'pay' in request.POST:
+            try:
+                wbw_id = int(request.POST.get('participant'))
+                Participant.objects.get(wbw_id=wbw_id)
+                session, response = _create_wbw_session()
+                for order in wbw_orders:
+                    date = datetime.strftime(localtime(order.date), "%d-%m-%Y")
+                    desc = order.itemstring()
+                    if order.paymentmethod == 'bystander':
+                        desc += " (voor {})".format(order.name)
+                    order.paid = True
+                    payload = {'action': 'add_transaction',
+                               'lid': settings.WBW_LIST_ID,
+                               'payment_by': wbw_id,
+                               'description': desc,
+                               'date': date,
+                               'amount': order.total() / 100,
+                               'factor['+str(order.participant.wbw_id)+']': 1,
+                               'submit_add': 'Verwerken'}
+                    session.post('https://wiebetaaltwat.nl/index.php', payload)
+                    order.save()
+            except:
+                # This cannot happen accidentally
+                HttpResponseRedirect(reverse('overview'))
         return HttpResponseRedirect(reverse('overview'))
 
     orders = Order.objects.all()
     context = {'orders': orders, 'grandtotal': Order.grandtotal(),
-               'slack': hasattr(settings, 'SLACK')}
+               'slack': hasattr(settings, 'SLACK'),
+               'unpaid': wbw_orders.count() > 0,
+               'participants': Participant.objects.all()}
     return render(request, 'orders/overview.html', context)

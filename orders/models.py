@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import validate_comma_separated_integer_list
 
+from wiebetaaltwat.models import Participant
+
 
 class Item(models.Model):
     name = models.CharField(max_length=200)
@@ -34,9 +36,16 @@ class Item(models.Model):
 
 class Order(models.Model):
     name = models.CharField(max_length=200)
-    wiebetaaltwat = models.BooleanField('Via Wiebetaaltwat', default=True)
+    participant = models.ForeignKey(Participant, blank=True, null=True)
+    paymentmethod = models.CharField(max_length=11,
+                                     choices=(('participant', 'Participant'),
+                                              ('bystander', 'Bystander'),
+                                              ('outoflist', 'Out-of-list'),
+                                              )
+                                     )
     items = models.ManyToManyField(Item, through='ItemOrder')
     date = models.DateTimeField(default=timezone.now)
+    paid = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name + ": " + ", ".join(map(str, self.items.all()))

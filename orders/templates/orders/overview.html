@@ -52,25 +52,58 @@
                     </p>
                 </form>
                 {% bootstrap_messages %}
+                {% if unpaid %}
+                    <p><strong>Let op!</strong> Er zijn nog bestellingen die via wiebetaaltwat kunnen worden verwerkt. Wie heeft hiervoor betaald?</p>
+                    <form role='form' method='post'>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class='row'>
+                                <div class='col-sm-9'>
+                                    <select class="form-control" id="id_participant" name="participant">
+                                        <option value="none" selected="selected">---------</option>
+                                        {% for participant in participants %}
+                                        <option value="{{ participant.wbw_id }}">{{ participant.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class='col-sm-3'>
+                                    <button type="submit" name="pay"
+                                            class="btn btn-default"
+                                            onclick="return confirm('Weet je zeker dat je alle wiebetaaltwat-betalingen als betaald wil markeren?')">
+                                             {% bootstrap_icon 'euro' %} Alles betalen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
                 {% for order in orders %}
                 <form role='form' method='post'>
                     {% csrf_token %}
                     <table class="table" style='margin-bottom:25px;'>
                         <tr>
-                            <th style='width:70%'>{{ order.name }} (wbw:
-                                {% if order.wiebetaaltwat %}
-                                <span class='text-success'>{% bootstrap_icon "ok" %}</span>
-                                {% else %}
-                                <span class='text-danger'>{% bootstrap_icon "remove" %}</span>
-                                {% endif %})
+                            <th style='width:70%'>{{ order.name }}
                                 <div class='ordertime'>{{ order.date | date:'Y-m-d H:i'}}</div>
                             </th>
                             <th>{{ order.total | euro }}</th>
-                            <th><button name='remove' value='{{ order.pk }}' type='submit' class='btn btn-danger btn-xs' onclick="return confirm('Weet je zeker dat je deze bestelling van {{ order.name}} wilt verwijderen?')">{% bootstrap_icon 'trash' %}</button></th>
+                            <th><button name='remove' value='{{ order.pk }}' type='submit' class='btn btn-danger btn-xs' onclick="return confirm('Weet je zeker dat je deze bestelling van {{ order.name}} wilt verwijderen?')" {% if order.paid %}disabled{% endif %}>{% bootstrap_icon 'trash' %}</button></th>
                         </tr>
                         {% for item in order.items.all %}
                         <tr><td>{{ item.name }}</td><td>{{ item | real_price_at:order.date | euro }}</td><td></td></tr>
                         {% endfor %}
+                        <tr>
+                            <td colspan='3'>Betaalmethode:
+                                {% if order.paid %}<s>{% endif %}
+                                {% if order.paymentmethod == 'participant' %}
+                                    <strong>Zelf</strong> via Wiebetaaltwat
+                                {% elif order.paymentmethod == 'bystander' %}
+                                    Via Wiebetaaltwat, via <strong>{{ order.participant.name }}</strong>
+                                {% else %}
+                                    <strong>Buiten de lijst om</strong>
+                                {% endif %}
+                                {% if order.paid %}</s> <em>Betaald!</em>{% endif %}
+                            </td>
+                        </tr>
                     </table>
                 </form>
                 {% endfor %}

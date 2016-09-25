@@ -62,3 +62,10 @@ menuJS.init();
 $(function () {
   $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 })
+
+$(function () {
+    $('a.paymentmethod').on('click', function(e) {
+        console.log($(this).data('method'));
+        $('input[name=paymentmethod]').val($(this).data('method'))
+    })
+})

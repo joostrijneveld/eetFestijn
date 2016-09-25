@@ -50,7 +50,9 @@
                         {% for item in order.items %}
                             <tr><td>{{ item.name }}</td><td>{{ item.price | euro }}</td></tr>
                         {% endfor %}
-                        <tr><td class='total'>betaalt via wiebetaaltwat:</td><td>{{ order.wiebetaaltwat|yesno:"ja, nee" }}</td></tr>
+                        {% if order.paymentmethod != 'outoflist' and order.paid %}
+                            <tr><td class='total'>Betaald door:</td><td>{{ order.participant }}</td></tr>
+                        {% endif %}
                         <tr><td class='total'>subtotaal:</td><td>{{ order.total | euro }}</td></tr>
                     {% endfor %}
                     <tfoot>

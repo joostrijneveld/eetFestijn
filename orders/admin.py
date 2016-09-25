@@ -13,7 +13,7 @@ class ItemAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = (ItemOrderInline, )
-    list_display = ('name', 'itemstring', 'total', 'wiebetaaltwat')
+    list_display = ('name', 'itemstring', 'total')
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Item, ItemAdmin)
