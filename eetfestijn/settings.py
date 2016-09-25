@@ -21,8 +21,6 @@ SECRET_KEY = 'OVERRIDE_ME'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -114,9 +112,3 @@ try:
     from .local_settings import *
 except ImportError:
     pass
-
-if DEBUG:
-    INSTALLED_APPS.append('debug_toolbar')
-    INTERNAL_IPS = ('127.0.0.1',)
-    MIDDLEWARE_CLASSES.append(
-        'debug_toolbar.middleware.DebugToolbarMiddleware')

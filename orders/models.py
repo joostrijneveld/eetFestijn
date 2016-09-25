@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import validate_comma_separated_integer_list
 
 
 class Item(models.Model):
@@ -65,7 +66,8 @@ class Discount(models.Model):
     name = models.CharField(max_length=200)
     value = models.IntegerField(default=0)
     relative = models.BooleanField(default=False)
-    days = models.CommaSeparatedIntegerField(max_length=20)
+    days = models.CharField(max_length=20,
+                            validators=[validate_comma_separated_integer_list])
 
     def __str__(self):
         return self.name
