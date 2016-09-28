@@ -161,6 +161,8 @@ def overview(request):
                                'amount': order.total() / 100,
                                'factor['+str(order.participant.wbw_id)+']': 1,
                                'submit_add': 'Verwerken'}
+                    if order.participant.wbw_id != wbw_id:
+                        payload['factor['+str(wbw_id)+']'] = 0
                     session.post('https://wiebetaaltwat.nl/index.php', payload)
                     order.save()
             except:
