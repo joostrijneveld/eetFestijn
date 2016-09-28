@@ -61,7 +61,7 @@
                         {% csrf_token %}
                         <div class="form-group">
                             <div class='row'>
-                                <div class='col-sm-9'>
+                                <div class='col-sm-8'>
                                     <select class="form-control" id="id_participant" name="participant">
                                         <option value="none" selected="selected">---------</option>
                                         {% for participant in participants %}
@@ -71,7 +71,7 @@
                                 </div>
                                 <div class='col-sm-3'>
                                     <button type="submit" name="pay"
-                                            class="btn btn-default"
+                                            class="btn btn-warning"
                                             onclick="return confirm('Weet je zeker dat je alle wiebetaaltwat-betalingen als betaald wil markeren?')">
                                              {% bootstrap_icon 'euro' %} Alles betalen
                                     </button>
