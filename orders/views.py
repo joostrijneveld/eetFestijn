@@ -29,7 +29,7 @@ def index(request):
         order.paymentmethod = request.POST.get('paymentmethod')
         if order.paymentmethod in ['participant', 'bystander']:
             try:
-                wbw_id = int(request.POST.get('participant', 'none'))
+                wbw_id = request.POST.get('participant', 'none')
                 order.participant = Participant.objects.get(wbw_id=wbw_id)
                 if order.paymentmethod == 'participant':
                     order.name = order.participant.name
@@ -144,26 +144,32 @@ def overview(request):
             messages.success(request, "Bestellingen gedeeld via Slack!")
         elif 'pay' in request.POST:
             try:
-                wbw_id = int(request.POST.get('participant'))
-                Participant.objects.get(wbw_id=wbw_id)
+                wbw_id = request.POST.get('participant')
                 session, response = _create_wbw_session()
                 for order in wbw_orders:
-                    date = datetime.strftime(localtime(order.date), "%d-%m-%Y")
+                    date = datetime.strftime(localtime(order.date), "%Y-%m-%d")
                     desc = order.itemstring()
                     if order.paymentmethod == 'bystander':
                         desc += " (voor {})".format(order.name)
                     order.paid = True
-                    payload = {'action': 'add_transaction',
-                               'lid': settings.WBW_LIST_ID,
-                               'payment_by': wbw_id,
-                               'description': desc,
-                               'date': date,
-                               'amount': order.total() / 100,
-                               'factor['+str(order.participant.wbw_id)+']': 1,
-                               'submit_add': 'Verwerken'}
-                    if order.participant.wbw_id != wbw_id:
-                        payload['factor['+str(wbw_id)+']'] = 0
-                    session.post('https://wiebetaaltwat.nl/index.php', payload)
+                    payload = {'expense': {
+                        'payed_by_id': wbw_id,
+                        'name': desc,
+                        'payed_on': date,
+                        'amount': order.total(),
+                        'shares_attributes': [
+                            {
+                                'member_id': order.participant.wbw_id,
+                                'multiplier': 1,
+                                'amount': order.total()
+                            }
+                        ]}}
+                    url = ('https://api.wiebetaaltwat.nl/api/lists/{}/expenses'
+                           .format(settings.WBW_LIST_ID))
+                    response = session.post(url,
+                                            json=payload,
+                                            headers={'Accept-Version': '1'},
+                                            cookies=response.cookies)
                     order.save()
             except:
                 # This cannot happen accidentally
