@@ -8,7 +8,7 @@ eetFestijn makes it easy to collect take-away orders for a large group. It is es
 
 The dependencies of eetFestijn are listed in the `requirements.txt` file. Since introducing the 'export to PDF' functionality, the number of dependencies has steeply grown. In order to be able to export PDFs, eetFestijn uses the [WeasyPrint](http://weasyprint.org/) library, converting HTML/CSS to print-ready PDF documents. Unfortunately, the dependencies of WeasyPrint are not all that straightforward. When running `pip install -r requirements.txt`, one might run into any number of the errors involving missing header files. Luckily, they can be trivially fixed by installing a number of development packages. On Debian-based systems, this can be achieved by calling `apt-get install libffi-dev libxml2-dev libxslt1-dev zlib1g-dev`.
 
-After succesfully installing the requirements, you might be faced with an error thrown by Django: `ImportError: cannot import name properties`. In that case, you may need to install `lib-pango`, as follows: `apt-get install libpango1.0-0`.
+After succesfully installing the requirements, you might be faced with an error thrown by Django: `ImportError: cannot import name properties`. In that case, you may need to install `lib-pango`, as follows: `apt-get install libpango1.0-0`. Or use `brew install cairo pango` if you're on macOS.
 
 ## Notes on installation
 
