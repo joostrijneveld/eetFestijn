@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.test import TestCase
+from django.test import Client
 from orders.models import Item, Order, ItemOrder, Discount
 from django.utils import timezone
 
@@ -129,3 +130,50 @@ class FestPopulateTestCase(TestCase):
     def test_totalnumber(self):
         self.assertEqual(190-2+1+20, Item.objects.count())
         self.assertEqual(3, Discount.objects.count())
+
+
+class ViewTestCase(TestCase):
+    def setUp(self):
+        self.c = Client()
+        data = {'paymentmethod': 'outoflist', 'name': 'setup', 'items[]': '17'}
+        self.c.post('/eetfestijn/', data)
+
+    def test_homepage(self):
+        resp = self.c.get('/eetfestijn/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_order(self):
+        data = {'paymentmethod': 'outoflist', 'name': 'test', 'items[]': '17',
+                'items[]': '16'}
+        resp = self.c.post('/eetfestijn/', data)
+        self.assertEqual(resp.status_code, 302)
+
+    def test_summary(self):
+        resp = self.c.get('/eetfestijn/summary/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_summary_pdf(self):
+        resp = self.c.get('/eetfestijn/summary.pdf')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_overview(self):
+        resp = self.c.get('/eetfestijn/overview/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_process_and_receipt(self):
+        resp = self.c.post('/eetfestijn/overview/', {'process': 'what'},
+                           follow=True)
+        data = {'paymentmethod': 'outoflist', 'name': 'process',
+                'items[]': '17'}
+        self.c.post('/eetfestijn/', data)
+        resp = self.c.post('/eetfestijn/overview/', {'process': 'what'},
+                           follow=True)
+        self.assertContains(resp, 'Alle bestellingen verwerkt!')
+        resp = self.c.get('/eetfestijn/receipts/')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_noname(self):
+        data = {'paymentmethod': 'outoflist', 'items[]': '17',
+                'items[]': '16'}
+        resp = self.c.post('/eetfestijn/', data)
+        self.assertContains(resp, 'Je hebt geen naam opgegeven')
