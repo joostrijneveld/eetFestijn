@@ -135,22 +135,31 @@ class FestPopulateTestCase(TestCase):
 class ViewTestCase(TestCase):
     def setUp(self):
         self.c = Client()
-        data = {'paymentmethod': 'outoflist', 'name': 'setup', 'items[]': '17'}
+        self.knakid = Item.objects.get(name="Knakworst").pk
+        self.frietid = Item.objects.get(name="Friet oorlog (klein)").pk
+        data = {'paymentmethod': 'outoflist', 'name': 'setup',
+                'items[]': str(self.knakid)}
         self.c.post('/eetfestijn/', data)
 
     def test_homepage(self):
         resp = self.c.get('/eetfestijn/')
-        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Menu')
 
     def test_order(self):
-        data = {'paymentmethod': 'outoflist', 'name': 'test', 'items[]': '17',
-                'items[]': '16'}
-        resp = self.c.post('/eetfestijn/', data)
-        self.assertEqual(resp.status_code, 302)
+        data = {'paymentmethod': 'outoflist', 'name': 'test',
+                'items[]': str(self.knakid)}
+        resp = self.c.post('/eetfestijn/', data, follow=True)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_print_script(self):
+        resp = self.c.get('/eetfestijn/print/')
+        # Its probably cooler if you check equivalency to the template but this
+        # is a reasonable guess
+        self.assertContains(resp, 'summary.pdf')
 
     def test_summary(self):
         resp = self.c.get('/eetfestijn/summary/')
-        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Knakworst')
 
     def test_summary_pdf(self):
         resp = self.c.get('/eetfestijn/summary.pdf')
@@ -158,22 +167,19 @@ class ViewTestCase(TestCase):
 
     def test_overview(self):
         resp = self.c.get('/eetfestijn/overview/')
-        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Bestellingen')
 
     def test_process_and_receipt(self):
-        resp = self.c.post('/eetfestijn/overview/', {'process': 'what'},
-                           follow=True)
         data = {'paymentmethod': 'outoflist', 'name': 'process',
-                'items[]': '17'}
+                'items[]': str(self.frietid)}
         self.c.post('/eetfestijn/', data)
         resp = self.c.post('/eetfestijn/overview/', {'process': 'what'},
                            follow=True)
         self.assertContains(resp, 'Alle bestellingen verwerkt!')
         resp = self.c.get('/eetfestijn/receipts/')
-        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Friet oorlog (klein)')
 
     def test_noname(self):
-        data = {'paymentmethod': 'outoflist', 'items[]': '17',
-                'items[]': '16'}
+        data = {'paymentmethod': 'outoflist', 'items[]': str(self.knakid)}
         resp = self.c.post('/eetfestijn/', data)
         self.assertContains(resp, 'Je hebt geen naam opgegeven')
