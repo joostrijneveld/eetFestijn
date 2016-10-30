@@ -22,6 +22,8 @@ def update_lists(request):
     Participant.objects.all().delete()
     for item in data['data']:
         uid = item['member']['id']
+        if uid == settings.WBW_UID:
+            continue
         name = item['member']['nickname']
         participant, _ = Participant.objects.get_or_create(wbw_id=uid)
         participant.name = name
