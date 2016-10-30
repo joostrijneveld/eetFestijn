@@ -91,3 +91,11 @@ span.oldprice {
     color: gray;
     text-decoration: line-through;
 }
+
+.wbw-preference {
+    display: inline-block
+}
+
+.wbw-preference > li {
+    float: none;
+}

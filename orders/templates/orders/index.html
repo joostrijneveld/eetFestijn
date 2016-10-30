@@ -21,7 +21,7 @@
                     {% csrf_token %}
                     {% bootstrap_messages %}
                     <p>Hoe wil je betalen?</p>
-                    <ul class="nav nav-pills" style='display:inline-block'>
+                    <ul class="nav nav-pills wbw-preference">
                         <li class="active"><a class='paymentmethod' data-method='participant' data-toggle="pill" href="#" data-target="#participate-tab, #no-name-tab">- Ik sta op de wiebetaaltwat-lijst</a></li>
                         <li><a class='paymentmethod' data-method='bystander' data-toggle="pill" href="#" data-target="#participate-tab, #name-tab">- Ik betaal aan iemand die op de lijst staat</a></li>
                         <li><a class='paymentmethod' data-method='outoflist' data-toggle="pill" href="#" data-target="#no-participate-tab, #name-tab">- We regelen het buiten de lijst om</a></li>
