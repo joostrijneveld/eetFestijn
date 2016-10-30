@@ -31,9 +31,12 @@ def update_lists(request):
 
 def _create_wbw_session():
     session = requests.Session()
-    payload = {'user[email]': settings.WBW_EMAIL,
-               'user[password]': settings.WBW_PASSWORD}
+    payload = {'user': {
+        'email': settings.WBW_EMAIL,
+        'password': settings.WBW_PASSWORD,
+        }
+    }
     response = session.post('https://api.wiebetaaltwat.nl/api/users/sign_in',
-                            payload,
+                            json=payload,
                             headers={'Accept-Version': '1'})
     return session, response
