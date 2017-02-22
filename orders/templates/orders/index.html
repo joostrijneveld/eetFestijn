@@ -51,6 +51,23 @@
                         </div>
                         <div id="no-participate-tab" class="tab-pane"></div>
                     </div>
+                    {% if warning_externals %}
+                    <div class="tab-content">
+                        <div id="name-tab" class="tab-pane">
+                            <div class="alert alert-warning">
+                                <strong>Let op!</strong>
+                                Als externe ben je van harte welkom om mee te eten, maar wij zijn geen thuisbezorgd.nl.
+                                De regel is dan ook: <br /><br />
+                                <strong>mee-eten = meefietsen</strong>
+
+                                <br /><br />
+                                Als jij degene bent die voor de externe betaalt, zorg er dan voor dat hij of zij
+                                meefietst.
+                            </div>
+                        </div>
+                        <div id="no-name-tab" class="tab-pane"></div>
+                    </div>
+                    {% endif %}
                     <hr>
                     <div class="form-group">
                         <label class="control-label">Voedsels</label>
