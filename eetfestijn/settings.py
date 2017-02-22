@@ -99,6 +99,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+WARNING_EXTERNALS = False
+
 # Slack integration
 # Override these settings in local_settings.py to enable
 

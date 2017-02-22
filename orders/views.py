@@ -60,6 +60,10 @@ def index(request):
         cols[0 if n < total/2 else 1].append(category)
         n += category.items.count()
     context = {'cols': cols, 'participants': Participant.objects.all()}
+
+    # add warning for eaters not in the wbw list
+    context['warning_externals'] = settings.WARNING_EXTERNALS
+
     return render(request, 'orders/index.html', context)
 
 
