@@ -172,7 +172,7 @@ def overview(request):
                            .format(settings.WBW_LIST_ID))
                     response = session.post(url,
                                             json=payload,
-                                            headers={'Accept-Version': '1'},
+                                            headers={'Accept-Version': '3'},
                                             cookies=response.cookies)
                     order.save()
             except:
